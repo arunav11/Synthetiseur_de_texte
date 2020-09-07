@@ -9,7 +9,35 @@ html, body {
     top: 0px;
     left: 0px;
 }
+.file-upload {
+	position: relative;
+	display: inline-block;
+}
+.file-upload__label {
+  display: block;
+  padding: 1em 2em;
+  color: #fff;
+  background: #222;
+  border-radius: .4em;
+  transition: background .3s;
 
+  &:hover {
+     cursor: pointer;
+     background: #000;
+  }
+}
+
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+    height: 100%;
+    opacity: 0;
+}
 .wrapper {
     position: absolute;
     top: 0px;
