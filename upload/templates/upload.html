@@ -4,65 +4,87 @@
 <html lang="en">
 
   <head>
-        <title>upload</title>
+        <title>Upload</title>
+
        <link rel="stylesheet" href="{% static 'css.css' %}">
     </head>
 
 <body>
-  <header>
-    <div class="header-title-bar">
-      <h1>Upload Your Lectures</h1>
+  <div class="wrapper">
+
+    <div class="full-width header1">
+
+      <div class="header-float">
+
+      </div>
     </div>
-  </header>
-  <main>
-    <section>
-      <label for="uploadBills" class="upload" id="uploadBox">
-          <div class="advantages-section">
-            <div class="advantage-block">
-              <div class="advantage-block__img-container">
-                <i class="fas fa-user-shield fa-lg"></i>
-              </div>
+    <div class="clear-float"></div>
 
-            </div>
+    <div class="full-width header2">
+      <span class="header2-btn overview">Overview</span>
 
+      <span class="header2-btn reports">Reports</span>
+      <div class="header2-right">
 
+      </div>
+    </div>
+    <div class="clear-float"></div>
 
-
+    <div class="app-body full-width">
+      <div class="app-contain overview-page">
+        <div class="app-sect1">
+          <div class="app-sect1-txt">
+            <h2>You don't have any lectures yet!</h2>
+            <a href="#" class="upload-btn" onclick="upload()">Upload one now</a>
           </div>
-          <svg
-            class="cloud-img"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="cloud-upload-alt"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-          >
-            <path
-              fill="#c6c6c6"
-              d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"
-            ></path>
-          </svg>
-          <h3 class="img-title" id="drag-title">
-            Drag and drop to upload
-            <span class="clarify">(multiple files allowed)</span>
-          </h3>
-          <p class="img-subtitle" id="drag-subTitle">
-            or <span class="blue">Browse</span> to choose a file
-          </p>
-          <h3 class="img-title uploading d-none">Uploading...</h3>
-          <h3 class="img-title done d-none">
-            Done. <span class="blue">Upload More</span>
-          </h3>
-          <input type="file" name="uploadBills" id="uploadBills" />
-        </label>
-      <div class="success d-none">Files sent</div>
-      <button class="btn" id="submitButton" disabled>
-          Submit Your Lectures
-        </button>
-    </section>
-  </main>
-</body>
+        </div>
 
+      </div>
+    </div>
+
+
+    <div class="upload-page">
+      <div class="upload-strip">
+        <div class="upload-left"><a href="#" class="web-upload-btn">Select document to upload <img class="wu-btn-icon" src="https://d2bfc25i1q1w66.cloudfront.net/public/042aeb05e78bb87688f5109bf75511f8e4e33339/assets/images/icn-upload.png"/></a> &nbsp;or drag stuff here
+        </div>
+        <div class="upload-right">
+         <div class="process-upload"><input type="checkbox" name="upload-chk"checked><label for="upload-chk">Process automatically</label></div>
+        </div>
+
+      </div>
+      <div class="clear-float"></div>
+      <div class="upload-col-wrap">
+        <center><h3 class="col-head">Alternative upload methods</h3></center>
+      <div class="upload-col1 upload-col">
+        <a href="#" class="col-link col1-link"></a>
+        <div class="col-text"><h4>Use Dropbox</h4>
+        <p>Save time by simply dragging and dropping files into the Shoeboxed folder in Dropbox.</p></div>
+        </div>
+      <div class="upload-col2 upload-col">
+        <a href="#" class="col-link col2-link"></a>
+        <div class="col-text"><h4>On the go organisation</h4>
+        <p>Send receipts to Shoeboxed anytime, anywhere with our free mobile applications for iPhone, iPad and Android.</p></div>
+        </div>
+      <div class="upload-col3 upload-col">
+        <a href="#" class="col-link col3-link"></a>
+        <div class="col-text"><h4>The magic envelope</h4>
+        <p>Fill one of our prepaid envelopes with your piles of paper clutter. We'll do the rest of the work for you!</p></div>
+        </div>
+      <div class="upload-col4 upload-col">
+        <a href="#" class="col-link col4-link"></a>
+        <div class="col-text"><h4>The power of email</h4>
+        <p>Forward emails from your online stores to Shoeboxed. We'll filter the receipts and store everything online.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-app">
+      <div class="closer">
+        </br>
+        <h1>Synthetiseur de texte</h1>
+      </div>
+
+    </div>
+  </div>
+</body>
 </html>
