@@ -1,5 +1,5 @@
 """
-ASGI config for untitled1 project.
+ASGI config for Synthetiseur_de_texte project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'untitled1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Synthetiseur_de_texte.settings')
 
 application = get_asgi_application()
