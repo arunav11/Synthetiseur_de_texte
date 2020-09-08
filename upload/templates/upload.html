@@ -5,8 +5,56 @@
 
 <head>
     <title>Upload</title>
-<link rel="icon" href="{% static 'icon.png'%}">
+    <link rel="icon" href="{% static 'icon.png' %}">
     <link rel="stylesheet" href="{% static 'css.css' %}">
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('input[type="file"]').change(function (e) {
+                var fileName = e.target.files[0].name;
+                $('label').text(fileName);
+            });
+        });
+    </script>
+    <style>
+        input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        input + label {
+            font-size: 1em;
+            font-weight: 700;
+            color: white;
+            background-color: #0084a9;
+            display: inline-block;
+            border: 5px solid red;
+        }
+
+        input:focus + label,
+        input + label:hover {
+            background-color: #3f7aa9;
+        }
+
+        input + label {
+            cursor: pointer;
+        }
+
+        input:focus + label {
+            outline: 1px dotted #000;
+        }
+
+        label {
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,8 +83,14 @@
             <div class="app-sect1">
                 <div class="app-sect1-txt">
                     <h2>You don't have any lectures yet!</h2>
-                    <a href="#" class="upload-btn" onclick="upload()">Upload one now</a>
-
+                    {#                    <a href="#" class="upload-btn" onclick="upload()">Upload one now</a>#}
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {#                        <input class="inputfile" type="file" name="mediaFile" id="mediaFile" accept=".wav,.mp4">#}
+                        {#                        <label for="mediaFile" id="fileLabel">Choose Audio/Video File</label>#}
+                        {{ form.as_p }}
+                        <button type="submit">Process File!</button>
+                    </form>
                 </div>
             </div>
 
@@ -46,13 +100,15 @@
 
     <div class="upload-page">
         <div class="upload-strip">
-            <div class="upload-left"><a href="#" class="web-upload-btn">Select document to upload <img
+            <div class="upload-left"><a href="#" class="web-upload-btn">Select document to upload<img
                     class="wu-btn-icon"
                     src="https://d2bfc25i1q1w66.cloudfront.net/public/042aeb05e78bb87688f5109bf75511f8e4e33339/assets/images/icn-upload.png"/></a>
                 &nbsp;or drag stuff here
             </div>
             <div class="upload-right">
-                <div class="process-upload"><input type="checkbox" name="upload-chk" checked><label for="upload-chk">Process
+                <div class="process-upload"><label>
+                    <input type="checkbox" name="upload-chk" checked>
+                </label><label for="upload-chk">Process
                     automatically</label></div>
             </div>
 

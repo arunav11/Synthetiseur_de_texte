@@ -2,16 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efe183d2-db33-4f92-b8a5-5cbc55c7a00b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/upload/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Synthetiseur_de_texte.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Synthetiseur_de_texte.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/asgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Synthetiseur_de_texte/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Synthetiseur_de_texte/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Synthetiseur_de_texte/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/upload/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/upload/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/static/css.css" beforeDir="false" afterPath="$PROJECT_DIR$/upload/static/css.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/upload/templates/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/upload/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/upload/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +27,7 @@
       <list>
         <option value="HTML File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -36,11 +37,13 @@
   <component name="ProjectId" id="1hDrSInClW9x6Qd5cuwmZ0qQkGt" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -106,8 +109,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1599463777188</updated>
-      <workItem from="1599556503985" duration="1907000" />
+      <workItem from="1599556503985" duration="13414000" />
     </task>
+    <task id="LOCAL-00001" summary="Changed Project Name">
+      <created>1599562744722</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1599562744723</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -123,5 +134,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed Project Name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed Project Name" />
   </component>
 </project>

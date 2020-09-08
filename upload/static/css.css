@@ -9,22 +9,20 @@ html, body {
     top: 0px;
     left: 0px;
 }
-.file-upload {
-	position: relative;
-	display: inline-block;
-}
-.file-upload__label {
-  display: block;
-  padding: 1em 2em;
-  color: #fff;
-  background: #222;
-  border-radius: .4em;
-  transition: background .3s;
 
-  &:hover {
-     cursor: pointer;
-     background: #000;
-  }
+.file-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.file-upload__label {
+    display: block;
+    padding: 1em 2em;
+    color: #fff;
+    background: #222;
+    border-radius: .4em;
+    transition: background .3s;
+
 }
 
 .file-upload__input {
@@ -33,11 +31,11 @@ html, body {
     top: 0;
     right: 0;
     bottom: 0;
-    font-size: 1;
-    width:0;
+    width: 0;
     height: 100%;
     opacity: 0;
 }
+
 .wrapper {
     position: absolute;
     top: 0px;
@@ -61,8 +59,7 @@ html, body {
 .search {
     width: 300px;
     height: 30px;
-    padding: 0 5px;
-    padding-left: 20px;
+    padding: 0 5px 0 20px;
     outline: none;
     background: #eee url(https://d2bfc25i1q1w66.cloudfront.net/public/e5812e140693e9e126cb55444cfd0a25c525176b/assets/images/icn-search.png) 8px 9px no-repeat;
     border: none;
@@ -93,7 +90,7 @@ html, body {
 }
 
 .header2 {
-    background-color: #0084a9;;
+    background-color: #0084a9;
     color: #fff;
     height: 47px;
 }
@@ -133,7 +130,7 @@ html, body {
 
 .add-document {
     background-color: #000;
-    color: #d3d3d3Ale;
+    color: #d3d3d3;
     padding: 15px 15px 15px 15px;
 }
 

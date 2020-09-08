@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'upload'
+    'upload',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -104,3 +105,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = 'AKIAIWBBGVVF6524LA4Q'
+AWS_SECRET_ACCESS_KEY = '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'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'synthetiseur-de-texte-files'
+AWS_S3_REGION_NAME = 'us-east-1'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
