@@ -89,7 +89,9 @@
                         {#                        <input class="inputfile" type="file" name="mediaFile" id="mediaFile" accept=".wav,.mp4">#}
                         {#                        <label for="mediaFile" id="fileLabel">Choose Audio/Video File</label>#}
                         {{ form.as_p }}
-                        <button type="submit">Process File!</button>
+                        <button type="submit" onclick="function backend() {
+                          
+                        }">Process File!</button>
                     </form>
                 </div>
             </div>
@@ -98,49 +100,6 @@
     </div>
 
 
-    <div class="upload-page">
-        <div class="upload-strip">
-            <div class="upload-left"><a href="#" class="web-upload-btn">Select document to upload<img
-                    class="wu-btn-icon"
-                    src="https://d2bfc25i1q1w66.cloudfront.net/public/042aeb05e78bb87688f5109bf75511f8e4e33339/assets/images/icn-upload.png"/></a>
-                &nbsp;or drag stuff here
-            </div>
-            <div class="upload-right">
-                <div class="process-upload"><label>
-                    <input type="checkbox" name="upload-chk" checked>
-                </label><label for="upload-chk">Process
-                    automatically</label></div>
-            </div>
-
-        </div>
-        <div class="clear-float"></div>
-        <div class="upload-col-wrap">
-            <center><h3 class="col-head">Alternative upload methods</h3></center>
-            <div class="upload-col1 upload-col">
-                <a href="#" class="col-link col1-link"></a>
-                <div class="col-text"><h4>Use Dropbox</h4>
-                    <p>Save time by simply dragging and dropping files into the Shoeboxed folder in Dropbox.</p></div>
-            </div>
-            <div class="upload-col2 upload-col">
-                <a href="#" class="col-link col2-link"></a>
-                <div class="col-text"><h4>On the go organisation</h4>
-                    <p>Send receipts to Shoeboxed anytime, anywhere with our free mobile applications for iPhone, iPad
-                        and Android.</p></div>
-            </div>
-            <div class="upload-col3 upload-col">
-                <a href="#" class="col-link col3-link"></a>
-                <div class="col-text"><h4>The magic envelope</h4>
-                    <p>Fill one of our prepaid envelopes with your piles of paper clutter. We'll do the rest of the work
-                        for you!</p></div>
-            </div>
-            <div class="upload-col4 upload-col">
-                <a href="#" class="col-link col4-link"></a>
-                <div class="col-text"><h4>The power of email</h4>
-                    <p>Forward emails from your online stores to Shoeboxed. We'll filter the receipts and store
-                        everything online.</p></div>
-            </div>
-        </div>
-    </div>
 
     <div class="footer-app">
         <div class="closer">
