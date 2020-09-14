@@ -1,8 +1,7 @@
-import requests
-from summa.summarizer import summarize
-
-import speech_recognition as sr
 import moviepy.editor as mp
+import requests
+import speech_recognition as sr
+from summa.summarizer import summarize
 
 
 def backend(url):
