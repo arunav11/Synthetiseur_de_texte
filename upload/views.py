@@ -8,9 +8,6 @@ def home(request):
     form = MediaFileForm()
     # get url for the video file from s3
 
-    # run the backend function
-    # backend(url)                            #remove this comment symbol
-
     if request.method == 'GET':
         return render(request, "upload.html", {"form": form})
 
