@@ -19,6 +19,7 @@
             });
         });
     </script>
+
     <style>
         input {
             width: 0.1px;
@@ -89,16 +90,26 @@
                         {#                        <input class="inputfile" type="file" name="mediaFile" id="mediaFile" accept=".wav,.mp4">#}
                         {#                        <label for="mediaFile" id="fileLabel">Choose Audio/Video File</label>#}
                         {{ form.as_p }}
-                        <button type="submit" onclick="function backend() {
-                          
-                        }">Process File!</button>
+                        <button type="submit">Process File!
+                        </button>
+                        <br>
+
+
                     </form>
+                    <br>
+
+                    <button type="submit" id="target" value="target">Summarize</button>
+                    <div id='loader' style='display: none;'>
+                        <img src="{% static 'icon.png'  %}" width='32px' height='32px'>
+                    </div>
+
+
                 </div>
+
             </div>
 
         </div>
     </div>
-
 
 
     <div class="footer-app">
@@ -109,5 +120,32 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#target").click(function (e) {
+
+            $.ajax({
+                type: "GET",
+                url: "/run",
+                beforeSend: function () {
+                    // Show image container
+                    $("#loader").show();
+                    console.log("loader running");
+                },
+
+                success: function () {
+                    console.log("running")
+                },
+                complete: function () {
+                    // Hide image container
+                    console.log("process complete");
+                    $("#loader").hide();
+                }
+            });
+        });
+    });
+
+</script>
 </body>
+
 </html>
