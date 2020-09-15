@@ -6,6 +6,7 @@
 <head>
     <title>Synthetiseur de Texte</title>
     <link rel="icon" href="{% static 'icon.png' %}">
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <!-- JS, Popper.js, and jQuery -->
@@ -14,6 +15,58 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
+=======
+    <link rel="stylesheet" href="{% static 'css.css' %}">
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('input[type="file"]').change(function (e) {
+                var fileName = e.target.files[0].name;
+                $('label').text(fileName);
+            });
+        });
+    </script>
+
+    <style>
+        input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        input + label {
+            font-size: 1em;
+            font-weight: 700;
+            color: white;
+            background-color: #0084a9;
+            display: inline-block;
+            border: 5px solid red;
+        }
+
+        input:focus + label,
+        input + label:hover {
+            background-color: #3f7aa9;
+        }
+
+        input + label {
+            cursor: pointer;
+        }
+
+        input:focus + label {
+            outline: 1px dotted #000;
+        }
+
+        label {
+            padding: 20px;
+        }
+    </style>
+>>>>>>> 2b3d914883cbbea30edb889f3da48b0c88b652c4
 </head>
 
 <body>
@@ -62,6 +115,7 @@
 
     <h2>You don't have any lectures yet!</h2>
                     {#                    <a href="#" class="upload-btn" onclick="upload()">Upload one now</a>#}
+<<<<<<< HEAD
         <form method="post" action="" enctype="multipart/form-data">
             <div class="form-group">
                 {% csrf_token %}
@@ -71,6 +125,69 @@
             <button type="submit" class="btn btn-primary">Process File!</button>
         </form>
 
+=======
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {#                        <input class="inputfile" type="file" name="mediaFile" id="mediaFile" accept=".wav,.mp4">#}
+                        {#                        <label for="mediaFile" id="fileLabel">Choose Audio/Video File</label>#}
+                        {{ form.as_p }}
+                        <button type="submit">Process File!
+                        </button>
+                        <br>
+
+
+                    </form>
+                    <br>
+
+                    <button type="submit" id="target" value="target">Summarize</button>
+                    <div id='loader' style='display: none;'>
+                        <img src="{% static 'icon.png'  %}" width='32px' height='32px'>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="footer-app">
+        <div class="closer">
+            </br>
+            <h1>Synthetiseur de texte</h1>
+        </div>
+
+    </div>
+>>>>>>> 2b3d914883cbbea30edb889f3da48b0c88b652c4
 </div>
+<script>
+    $(document).ready(function () {
+        $("#target").click(function (e) {
+
+            $.ajax({
+                type: "GET",
+                url: "/run",
+                beforeSend: function () {
+                    // Show image container
+                    $("#loader").show();
+                    console.log("loader running");
+                },
+
+                success: function () {
+                    console.log("running")
+                },
+                complete: function () {
+                    // Hide image container
+                    console.log("process complete");
+                    $("#loader").hide();
+                }
+            });
+        });
+    });
+
+</script>
 </body>
+
 </html>

@@ -1,6 +1,10 @@
 import os
-
 from pathlib import Path
+
+import pymysql
+
+pymysql.install_as_MySQLdb()
+pymysql.version_info = (1, 4, 13, 'final', 0)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +18,7 @@ SECRET_KEY = ')bx6szjtd(8+of@038mrx%+ri0l!j%i+_hu48#y&q%fbaz!qx)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0dwf3qmn8j.execute-api.us-east-1.amazonaws.com", "127.0.0.1"]
 
 # Application definition
 
@@ -64,9 +68,17 @@ WSGI_APPLICATION = 'Synthetiseur_de_texte.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hackathon_db',
+        'USER': 'master_hackathon',
+        'PASSWORD': 'Serverless',
+        'HOST': 'db4free.net',  # Endpoint
+        'PORT': '3306',
     }
 }
 
@@ -111,3 +123,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_STORAGE_BUCKET_NAME = 'synthetiseur-de-texte-files'
 AWS_S3_REGION_NAME = 'us-east-1'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_QUERYSTRING_AUTH=False

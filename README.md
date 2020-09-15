@@ -36,3 +36,5 @@ This would hot reload the server
 As there is no dedicated button to run the backend therefore the call is made whenever the home page is rendered therefore to call the function click on (http://127.0.0.1:8000/) in terminal tab 
 
 This would generate the summary.txt file inside the project directory
+
+NOTE:AFTER TAKING A NEW PULL DELETE THE FILE FROM MODEL AND REUPLOAD THE LECTURE
