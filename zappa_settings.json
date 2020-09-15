@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "django_settings": "Synthetiseur_de_texte.settings",
+        "aws_region": "us-east-1",
+        "project_name": "synthetiseur_de_texte",
+        "runtime": "python3.6",
+        "s3_bucket": "synthetiseur-de-texte"
+    }
+}

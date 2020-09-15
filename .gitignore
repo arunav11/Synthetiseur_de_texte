@@ -90,6 +90,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+<<<<<<< HEAD
 # Sublime Text #
 *.tmlanguage.cache
 *.tmPreferences.cache
@@ -114,3 +115,7 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+
+# Pyre type checker
+.pyre/
+

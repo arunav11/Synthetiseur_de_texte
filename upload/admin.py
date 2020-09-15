@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from upload.models import MediaFile
+
+admin.site.register(MediaFile)
