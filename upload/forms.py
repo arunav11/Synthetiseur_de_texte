@@ -10,6 +10,7 @@ class MediaFileForm(forms.ModelForm):
         self.label_suffix = ""
         self.fields['photo'].widget.attrs['accept'] = ".wav,.mp4"
         self.fields['photo'].widget.attrs['class'] = 'form-control-file'
+        self.fields['photo'].widget.attrs['style'] = 'text-align: center'
 
     class Meta:
         model = MediaFile

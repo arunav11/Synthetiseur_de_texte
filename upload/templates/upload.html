@@ -6,17 +6,20 @@
 <head>
     <title>Synthetiseur de Texte</title>
     <link rel="icon" href="{% static 'icon.png' %}">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}">
-
-=======
-    <link rel="stylesheet" href="{% static 'css.css' %}">
     <script
             src="https://code.jquery.com/jquery-3.5.1.js"
             integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
@@ -30,137 +33,87 @@
         });
     </script>
 
-    <style>
-        input {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
 
-        input + label {
-            font-size: 1em;
-            font-weight: 700;
-            color: white;
-            background-color: #0084a9;
-            display: inline-block;
-            border: 5px solid red;
-        }
-
-        input:focus + label,
-        input + label:hover {
-            background-color: #3f7aa9;
-        }
-
-        input + label {
-            cursor: pointer;
-        }
-
-        input:focus + label {
-            outline: 1px dotted #000;
-        }
-
-        label {
-            padding: 20px;
-        }
-    </style>
->>>>>>> 2b3d914883cbbea30edb889f3da48b0c88b652c4
 </head>
+
+<style>
+    #description {
+        margin-top: 40px;
+    }
+
+    #description p {
+        margin-top: 10px;
+        font-size: 17px;
+        color: gray;
+    }
+
+    #middle-section {
+        margin-top: 40px;
+        padding: 10px;
+        background-color: aliceblue;
+    }
+
+    #nav-home {
+        text-align: center;
+    }
+
+</style>
 
 <body>
 <nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">
-    Synthetiseur de Texte
-  </a>
+    <a class="navbar-brand" href="#">
+        Synthetiseur de Texte
+    </a>
 </nav>
 
-  <div class="container" id="description">
+<div class="container" id="description">
     <div class="row">
-      <div class="col-6 mx-auto col-md-4 order-md-2">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="430" class="img-fluid mb-3 mb-md-0" viewBox="0 0 1024 860" focusable="false" role="img"><title>Bootstrap</title><defs><linearGradient id="c" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#5c24ae"/><stop offset="100%" stop-color="#30135a"/></linearGradient><path id="b" d="M355.967 242.807l-322 216.395c-44.275 29.754-44.275 78.443 0 108.197l322 216.395c44.275 29.754 116.725 29.754 161 0l322-216.395c44.275-29.754 44.275-78.443 0-108.197l-322-216.395c-44.275-29.754-116.725-29.754-161 0z"/><filter id="a" width="108%" height="112%" x="-4%" y="-4.3%" filterUnits="objectBoundingBox"><feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="10"/><feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/></filter><linearGradient id="f" x1="50%" x2="50%" y1="-17.303%" y2="100%"><stop offset="0%" stop-color="#7331d4"/><stop offset="100%" stop-color="#461b84"/></linearGradient><path id="e" d="M355.967 132.807l-322 216.395c-44.275 29.754-44.275 78.443 0 108.197l322 216.395c44.275 29.754 116.725 29.754 161 0l322-216.395c44.275-29.754 44.275-78.443 0-108.197l-322-216.395c-44.275-29.754-116.725-29.754-161 0z"/><filter id="d" width="108%" height="112%" x="-4%" y="-4.3%" filterUnits="objectBoundingBox"><feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="10"/><feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/></filter><linearGradient id="i" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#905bdd"/><stop offset="100%" stop-color="#5521a0"/></linearGradient><path id="h" d="M355.967 22.807l-322 216.395c-44.275 29.754-44.275 78.443 0 108.197l322 216.395c44.275 29.754 116.725 29.754 161 0l322-216.395c44.275-29.754 44.275-78.443 0-108.197l-322-216.395c-44.275-29.754-116.725-29.754-161 0z"/><filter id="g" width="108%" height="112%" x="-4%" y="-4.3%" filterUnits="objectBoundingBox"><feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="10"/><feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/></filter></defs><g fill="none"><g transform="translate(75 23)"><use fill="#000" filter="url(#a)" xlink:href="#b"/><use fill="url(#c)" xlink:href="#b"/></g><g transform="translate(75 23)"><use fill="#000" filter="url(#d)" xlink:href="#e"/><use fill="url(#f)" xlink:href="#e"/></g><g transform="translate(75 23)"><use fill="#000" filter="url(#g)" xlink:href="#h"/><use fill="url(#i)" xlink:href="#h"/></g><path fill="#fff" d="M558.273 447.667L308.036 279.5l97.982-65.847c42.83-28.784 96.789-31.483 134.245-6.311 26.044 17.502 31.214 46.615 11.444 65.724l1.389.934c38.324-19.932 84.107-18.527 117.396 3.845 44.046 29.6 38.671 68.419-14.561 104.193l-97.658 65.629zM447.112 331.01l49.942-33.562c36.935-24.822 42.31-48.249 15.224-66.451-24.798-16.665-55.49-14.453-85.851 5.95l-59.641 40.081 80.326 53.982zm176.532 35.663c37.63-25.289 42.136-48.832 13.203-68.276-28.932-19.444-64.163-15.614-104.042 11.186l-58.789 39.508 87.92 59.084 61.708-41.502z"/></g></svg>
-      </div>
-      <div class="col-md-8 order-md-1 text-center text-md-left pr-md-5">
-        <h1 class="mb-3">Get Your Lecture Summary Easily</h1>
-        <p class="lead mb-4">
-            Synthetiseur de Texte provides you an easy way to convert your lecture video/audio to a summary so it is easier for you to refer to it later.
-        </p>
-
-      </div>
-    </div>
-
-  </div>
-
-
-<div class="container">
-
-    <div class="full-width header1">
-
-        <div class="header-float">
+        <div class="col-6 mx-auto col-md-4 order-md-2">
+            <img height="200px" src="{% static 'homepage.png' %}">
+        </div>
+        <div class="col-md-8 order-md-1 text-center text-md-left pr-md-5">
+            <h1 class="mb-3">Get Your Lecture Summary Easily</h1>
+            <p>
+                Synthetiseur de Texte provides you an easy way to convert your lecture video/audio to a summary so it is
+                easier for you to refer to it later.
+            </p>
 
         </div>
     </div>
-    <div class="clear-float"></div>
 
-    <div class="full-width header2">
-        <span class="header2-btn overview">Overview</span>
+</div>
 
-        <span class="header2-btn reports">Reports</span>
-        <div class="header2-right">
 
+<div class="container" id="middle-section">
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true">Overview</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Reports</a>
         </div>
-    </div>
-    <div class="clear-float"></div>
-
-    <h2>You don't have any lectures yet!</h2>
-                    {#                    <a href="#" class="upload-btn" onclick="upload()">Upload one now</a>#}
-<<<<<<< HEAD
-        <form method="post" action="" enctype="multipart/form-data">
-            <div class="form-group">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </div>
-
-            <button type="submit" class="btn btn-primary">Process File!</button>
-        </form>
-
-=======
-                    <form method="post" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {#                        <input class="inputfile" type="file" name="mediaFile" id="mediaFile" accept=".wav,.mp4">#}
-                        {#                        <label for="mediaFile" id="fileLabel">Choose Audio/Video File</label>#}
-                        {{ form.as_p }}
-                        <button type="submit">Process File!
-                        </button>
-                        <br>
-
-
-                    </form>
-                    <br>
-
-                    <button type="submit" id="target" value="target">Summarize</button>
-                    <div id='loader' style='display: none;'>
-                        <img src="{% static 'icon.png'  %}" width='32px' height='32px'>
-                    </div>
-
-
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <h2>You don't have any lectures yet!</h2>
+            <form method="post" action="" enctype="multipart/form-data">
+                <div class="form-group">
+                    {% csrf_token %}
+                    {{ form.as_p }}
                 </div>
 
-            </div>
+                <button type="submit" class="btn btn-success">Process File!</button>
+                <div id='loader' style='display: none;'>
+                    <img src="{% static 'icon.png' %}" width='32px' height='32px'>
+                </div>
+            </form>
 
+            <button type="submit" id="target" class="btn btn-primary">Summarise</button>
         </div>
-    </div>
-
-
-    <div class="footer-app">
-        <div class="closer">
-            </br>
-            <h1>Synthetiseur de texte</h1>
-        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
 
     </div>
->>>>>>> 2b3d914883cbbea30edb889f3da48b0c88b652c4
 </div>
 <script>
     $(document).ready(function () {
