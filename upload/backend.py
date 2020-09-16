@@ -1,44 +1,44 @@
-import requests
-import speech_recognition as sr
+import os
 
 import moviepy.editor as mp
-import os
+import requests
+import speech_recognition as sr
 from summa.summarizer import summarize
 
 
-def backend(url):
-    # get the video from s3 using the url
+def extract_summary_from_media_file(url: str) -> str:
+    FILE_NAME = url.split("/")[-1].split(".")[0]
+    EXTENSTION = url.split("/")[-1].split(".")[1]
 
+    print('{}.{}'.format(FILE_NAME, EXTENSTION))
+    # get the video from s3 using the url
     r = requests.get(url, allow_redirects=True)
 
-    open('upload//testvideolecture.mp4', 'wb').write(r.content)
+    open('upload//{}.{}'.format(FILE_NAME, EXTENSTION), 'wb').write(r.content)
+
     # convert video to audio
-    clip = mp.VideoFileClip(r"upload//testvideolecture.mp4")
-
-    # Insert Local Audio File Path
-    clip.audio.write_audiofile(r"upload//testvideolecture-1.wav")
-
-    # convert audio to text using google speech to text api
+    clip = mp.VideoFileClip(r"upload//{}.{}".format(FILE_NAME, EXTENSTION))
 
     # give path for the audio file
-    filename = "upload//testvideolecture-1.wav"
+    filename = 'upload//{}.{}'.format(FILE_NAME, "wav")
+
+    # Insert Local Audio File Path
+    clip.audio.write_audiofile(filename)
 
     text = convert_to_text(filename)
-
     text1 = refine_text(text)
     text = text1
-
     punctuatedText = punctuate_text(text)
     questionList = generate_questions(text, punctuatedText)
     print("Questions are:", questionList)
     print("/n")
 
-    text = generate_summary(punctuatedText)
-    text = addIndentation(text)
-    save_summary(text)
+    summary = generate_summary(punctuatedText)
+    summary = addIndentation(summary)
+    print("Compression Rate: {}".format(len(summary) / len(text)))
+    # save_summary(text)
 
-    print("function called")
-    print("ran1")
+    return summary
 
 
 def generate_questions(text, pText):
@@ -69,7 +69,7 @@ def punctuate_text(text):
 
 
 def generate_summary(text):
-    text = summarize(text, ratio=0.9)
+    text = summarize(text, ratio=0.7)
     return text
 
 
@@ -95,8 +95,8 @@ def refine_text(text):
     list1 = ["very", "so", "pretty", "always", "the", "are", "is", "but",
              "and", "for", "in", "they", "a"]
     for word in list1:
-        text1 = text.replace(" " + word + " ", " ")
-    return text1
+        text = text.replace(" " + word + " ", " ")
+    return text
 
 
 def convert_to_text(filename):
@@ -113,7 +113,7 @@ def convert_to_text(filename):
 
 
 def save_summary(text):
-    f = open("upload//Summary.txt", "a")
+    f = open("upload//Summary.txt", "w+")
 
     f.write(text)
 
@@ -128,5 +128,3 @@ def save_questions(question_list):
                     f.write("%s\n" % i)
             else:
                 f.write("%s\n" % item)
-
-

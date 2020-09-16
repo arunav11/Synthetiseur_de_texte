@@ -119,3 +119,5 @@ GitHub.sublime-settings
 # Pyre type checker
 .pyre/
 
+/.idea/vcs.xml
+/.idea

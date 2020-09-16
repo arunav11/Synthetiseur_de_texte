@@ -7,7 +7,8 @@
     "s3_bucket": "synthetiseur-de-texte",
     "environment_variables": {
       "FFMPEG_STATIC": "/tmp/synthetiseur_de_texte/ffmpeg",
-      "IMAGEIO_FFMPEG_EXE": "/tmp/synthetiseur_de_texte/ffmpeg"
+      "IMAGEIO_FFMPEG_EXE": "/tmp/synthetiseur_de_texte/ffmpeg",
+      "is_lambda": true
     },
     "slim_handler": true
   }

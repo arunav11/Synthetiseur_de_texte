@@ -19,6 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <script
             src="https://code.jquery.com/jquery-3.5.1.js"
@@ -92,48 +93,104 @@
                aria-controls="nav-home" aria-selected="true">Overview</a>
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
                aria-controls="nav-profile" aria-selected="false">Reports</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-summary" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Generate Summary</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-            <h2>You don't have any lectures yet!</h2>
+            {% if all_files %}
+                <ul class="list-group">
+                    {% for media in all_files %}
+                        <li class="list-group-item">
+                        <a href="{{ media.file.url }}" target="_blank">{{ media.file.name }}</a> | {{ media.unique_id }}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="padding: 6px 0 6px 0">You don't have any lectures yet!</h3>
+            {% endif %}
             <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form }}
                 </div>
-
-                <button type="submit" class="btn btn-success">Process File!</button>
-                <div id='loader' style='display: none;'>
-                    <img src="{% static 'icon.png' %}" width='32px' height='32px'>
-                </div>
+                <button type="submit" class="btn btn-success">Upload File!</button>
             </form>
-
-            <button type="submit" id="target" class="btn btn-primary">Summarise</button>
+            {% if unique_id %}
+                <div>Your Unique ID is <span class="font-weight-bold text-success"
+                                             id="unique_id_identifier">{{ unique_id }}</span>
+                    <button class="btn" onclick="copyFunction()"><i class="fa fa-clone" title="Copy to clipboard"></i></button>
+                </div>
+            {% endif %}
         </div>
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-
+        <div class="tab-pane fade" id="nav-summary" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <label for="unique_id">Enter your ID associated with your video: </label>
+            <input type="text" id="unique_id" name="unique_id" required>
+            <button type="submit" id="target" class="btn btn-primary">Summarise</button>
+            <br>
+            <div id='loader' style='display: none;'>
+                <img src="{% static 'loading.gif' %}" width='32px' height='32px' alt="loader">
+            </div>
+            <div class="text-danger" id="error_message"></div>
+            <div id="generated_summary">Summary will be shown here!</div>
+        </div>
     </div>
 </div>
 <script>
+    function copyFunction() {
+
+        let $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($("#unique_id_identifier").text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+
+        alert("ID Copied!");
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     $(document).ready(function () {
         $("#target").click(function (e) {
-
+            const csrftoken = getCookie('csrftoken');
+            const input_data = {
+                "unique_id": $("#unique_id").val(),
+            };
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/run",
-                beforeSend: function () {
-                    // Show image container
+                data: input_data,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     $("#loader").show();
-                    console.log("loader running");
+                    $("#error_message").html("");
+                    $("#generated_summary").html("");
                 },
 
-                success: function () {
-                    console.log("running")
+                success: function (data) {
+                    if (data["has_error"] === true) {
+                        $("#error_message").html("ID is not correct! Please try again");
+                    } else {
+                        $("#generated_summary").html(data["summary"]);
+                    }
+
                 },
                 complete: function () {
-                    // Hide image container
-                    console.log("process complete");
                     $("#loader").hide();
                 }
             });
