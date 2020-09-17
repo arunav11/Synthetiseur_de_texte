@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from django.http import JsonResponse, HttpResponseNotFound
@@ -38,15 +39,20 @@ def run(request):
             media_file_object: MediaFile = media_file_objects.first()
             if media_file_object.summary == "":
                 url = media_file_object.file.url
-                summary = extract_summary_from_media_file(url)
+                summary, question_list = extract_summary_from_media_file(url)
                 media_file_object.summary = summary
+                media_file_object.questions = json.dumps(question_list)
                 media_file_object.save()
+                final_list = json.dumps(question_list)
             else:
                 summary = media_file_object.summary
+                final_list = media_file_object.questions
 
+            print(final_list)
             # Returning JSON Response
             return JsonResponse({
                 "summary": summary,
+                "question_list": final_list,
                 "has_error": False
             })
         else:
