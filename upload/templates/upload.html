@@ -109,7 +109,8 @@
             {% else %}
                 <h3 style="padding: 6px 0 6px 0">You don't have any lectures yet!</h3>
             {% endif %}
-            <form method="post" action="" enctype="multipart/form-data">
+            <form method="post" action="" enctype="multipart/form-data" name="file_upload"
+                  onsubmit="return fileSizeCheck()">
                 <div class="form-group">
                     {% csrf_token %}
                     {{ form }}
@@ -142,6 +143,15 @@
     </div>
 </div>
 <script>
+    function fileSizeCheck() {
+        let oFile = document.forms["file_upload"]["file"].files[0];
+        if (oFile.size > 4194304) {
+            alert("File size must under 4MB! (Currently: " + (oFile.size / 1024 / 1024).toFixed(2) + " MB)");
+            return false;
+        }
+        return true;
+    }
+
     function copyFunction() {
 
         let $temp = $("<input>");
