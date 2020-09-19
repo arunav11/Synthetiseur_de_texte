@@ -35,3 +35,32 @@ input {
 	-webkit-animation: progress-bar-stripes 1s linear infinite;
 	animation: progress-bar-stripes 1s linear infinite;
 }
+
+#upload-msg {
+    margin-top: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.alert {
+    text-align: center;
+}
+
+
+#progress_bar_summary {
+    margin: 20px 30px 0px 30px;
+}
+
+#target {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#error_message {
+    margin-top: 10px;
+}
+#upload-msg-summary {
+    margin-top: 10px;
+    font-size: 15px;
+    text-align: center;
+}

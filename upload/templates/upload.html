@@ -8,6 +8,7 @@
     <link rel="icon" href="{% static 'icon.png' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -41,7 +42,22 @@
     <a class="navbar-brand" href="#">
         Synthetiseur de Texte
     </a>
+    <a href="https://github.com/arunav11/Synthetiseur_de_texte/" target="_blank">
+        <img height="30px" src="{% static 'icons8-github-144.png' %}"> </a>
 </nav>
+
+{% if unique_id %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Your file upload was successful. </strong>
+        Your Unique ID is <strong id="unique_id_identifier">{{ unique_id }}</strong>
+        <button class="btn" onclick="copyFunction()"><i class="fa fa-clone" title="Copy to clipboard"></i>
+        </button>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
 
 <div class="container" id="description">
     <div class="row">
@@ -71,6 +87,8 @@
                aria-controls="nav-profile" aria-selected="false">Generate Summary/Questions</a>
         </div>
     </nav>
+
+
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             {% if all_files %}
@@ -81,7 +99,7 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <h3 style="padding: 6px 0 6px 0">You don't have any lectures yet!</h3>
+                <h4 style="padding: 6px 0 6px 0">You don't have any lectures yet! Upload one to get started.</h4>
             {% endif %}
 
             <div class="card text-white bg-info" style="margin: 25px">
@@ -93,7 +111,7 @@
                         <span class="text-warning"><b>4 MB</b></span></p>
                 </div>
             </div>
-            <form method="post" action="" enctype="multipart/form-data" name="file_upload"
+            <form id="file_upload" method="post" action="" enctype="multipart/form-data" name="file_upload"
                   onsubmit="return fileSizeCheck()">
                 <div class="form-group">
                     {% csrf_token %}
@@ -101,176 +119,236 @@
                 </div>
                 <button type="submit" class="btn btn-success">Upload File!</button>
 
-                <div class="progress" id="progress_bar">
+                <div class="progress" id="progress_bar" style="display:none">
                     <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar"
-                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
                 </div>
 
+                <p id="upload-msg" style="display: none"> Upload in Progress . . . . </p>
+
             </form>
-            {% if unique_id %}
-                <div>Your Unique ID is <span class="font-weight-bold text-success"
-                                             id="unique_id_identifier">{{ unique_id }}</span>
-                    <button class="btn" onclick="copyFunction()"><i class="fa fa-clone" title="Copy to clipboard"></i>
-                    </button>
-                </div>
-            {% endif %}
+
         </div>
         <div class="tab-pane fade" id="nav-summary" role="tabpanel" aria-labelledby="nav-profile-tab">
             <label for="unique_id">Enter your ID associated with your video: </label>
-            <input type="text" id="unique_id" name="unique_id" required>
+            <input class="form-control short" type="text" id="unique_id" name="unique_id" required>
             <button type="submit" id="target" class="btn btn-primary">Summarize and Generate Practice Questions</button>
             <br>
-            <div id='loader' style='display: none;'>
-                <img src="{% static 'loading.gif' %}" width='32px' height='32px' alt="loader">
+            <div class="progress" id="progress_bar_summary" style="display: none">
+                <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar"
+                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
             </div>
+
+            <div id="upload-msg-summary" style="display: none">
+                <p>
+                    Please wait while we are processing your file . . . .
+                </p>
+            </div>
+
+
             <div class="text-danger" id="error_message"></div>
-            <div id="generated_summary">Summary will be shown here!</div>
+            <div class="row">
+                <div class="col-md">
+                     <div id="generated_summary"></div>
+                </div>
+                <div class="col-md">
+                    <div id="generated_original"></div>
+                </div>
+
+            </div>
+
+            <hr id="break" style="display: none;">
             <div id="generated_questions"></div>
         </div>
     </div>
 </div>
 
-
-<footer class="page-footer font-small blue pt-4">
-    <div class="container-fluid text-center text-md-left">
+<div class="container">
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
-            <div class="col-md-6 mt-md-0 mt-3">
-                <h5 class="text-uppercase">Synthetiseur de Texte</h5>
-                <!--
-                TODO: To add something about our project
-                -->
-                <p>Please Add some content here chappe</p>
+            <div class="col-4">
+                <strong> Synthetiseur de Texte </strong>
+                <small class="d-block mb-3 text-muted">© 2020</small>
             </div>
-            <hr class="clearfix w-100 d-md-none pb-3">
+            <div class="col-4">
+                <h5>Team</h5>
+                <ul class="list-unstyled text-small">
+                    <li><span>Arunav Sharma</span></li>
+                    <li><span>Deepak Tiwari</span></li>
+                    <li><span>Madhav Pruthi</span></li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <h5>Technologies</h5>
+                <ul class="list-unstyled text-small">
+                    <li><span>Django</span></li>
+                    <li><span>Bootstrap</span></li>
+                    <li><span>AWS</span></li>
+                </ul>
+            </div>
+            {#          <div class="col-6 col-md">#}
+            {#            <h5>About</h5>#}
+            {#            <ul class="list-unstyled text-small">#}
+            {#              <li><a class="text-muted" href="#">Team</a></li>#}
+            {#              <li><a class="text-muted" href="#">Locations</a></li>#}
+            {#              <li><a class="text-muted" href="#">Privacy</a></li>#}
+            {#              <li><a class="text-muted" href="#">Terms</a></li>#}
+            {#            </ul>#}
+            {#          </div>#}
         </div>
-    </div>
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">Team Pero_gamers :)</a>
-    </div>
-</footer>
+    </footer>
 
-<script>
-    function fileSizeCheck() {
-        let oFile = document.forms["file_upload"]["file"].files[0];
-        if (oFile.size > 4194304) {
-            alert("File size must under 4MB! (Currently: " + (oFile.size / 1024 / 1024).toFixed(2) + " MB)");
-            return false;
+
+    <script>
+
+        $(document).on('submit', '#file_upload', function (e) {
+            var progress_bar = document.getElementById('progress_bar');
+            var upload_msg = document.getElementById('upload-msg');
+            progress_bar.setAttribute('style', 'display: flex');
+            upload_msg.setAttribute('style', 'display: block');
+        });
+
+        function fileSizeCheck() {
+            let oFile = document.forms["file_upload"]["file"].files[0];
+            if (oFile.size > 4194304) {
+                alert("File size must under 4MB! (Currently: " + (oFile.size / 1024 / 1024).toFixed(2) + " MB)");
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
 
-    function copyFunction() {
+        function copyFunction() {
 
-        let $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val($("#unique_id_identifier").text()).select();
-        document.execCommand("copy");
-        $temp.remove();
+            let $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($("#unique_id_identifier").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
 
-        alert("ID Copied!");
-    }
+            alert("ID Copied!");
+        }
 
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
             }
+            return cookieValue;
         }
-        return cookieValue;
-    }
 
-    $.fn.toggleText = function (t1, t2) {
-        if (this.text() === t1) this.text(t2);
-        else this.text(t1);
-        return this;
-    };
+        $.fn.toggleText = function (t1, t2) {
+            if (this.text() === t1) this.text(t2);
+            else this.text(t1);
+            return this;
+        };
 
-    function toggleSummary() {
-        let element = $("#generated_summary");
+        function toggleSummary() {
+            let element = $("#generated_summary");
 
-        $.trim(element.html()) === summ_on ? element.html(summ_off) : element.html(summ_on);
-    }
+            $.trim(element.html()) === summ_on ? element.html(summ_off) : element.html(summ_on);
+        }
 
-    let summ_on, summ_off;
+        let summary, original;
 
-    $(document).ready(function () {
-        $("#target").click(function (e) {
-            const csrftoken = getCookie('csrftoken');
-            const input_data = {
-                "unique_id": $("#unique_id").val(),
-            };
-            $.ajax({
-                type: "POST",
-                url: "/dev/run",
-                data: input_data,
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    $("#loader").show();
-                    $("#error_message").html("");
-                    $("#generated_summary").html("");
-                    $("#generated_questions").html("");
-                },
+        $(document).ready(function () {
+            $("#target").click(function (e) {
+                const csrftoken = getCookie('csrftoken');
+                const input_data = {
+                    "unique_id": $("#unique_id").val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/dev/run",
+                    data: input_data,
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        $("#progress_bar_summary").attr('style', 'display: flex');
+                        $("#upload-msg-summary").attr('style', 'display: block');
+                        $("#error_message").html("");
+                        $("#generated_summary").html("");
+                        $("#generated_questions").html("");
+                    },
 
-                success: function (data) {
-                    if (data["has_error"] === true) {
-                        $("#error_message").html(data["error"]);
-                    } else {
-                        let IconHTML_on = "<div onclick=\"toggleSummary()\"><i class=\"fa fa-toggle-on\" aria-hidden=\"true\"></i></div>";
-                        let IconHTML_off = "<div onclick=\"toggleSummary()\"><i class=\"fa fa-toggle-off\" aria-hidden=\"true\"></i></div>";
+                    success: function (data) {
+                        if (data["has_error"] === true) {
+                            $("#error_message").html(data["error"]);
+                        } else {
 
-                        summ_on = "<h3>Summary " + IconHTML_on + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
-                            data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>";
+                            summary = "<div class='card'> " +
+                                "<div class='card-header'> " +
+                                "<b>Summary</b> </div> " +
+                                "<div class='card-body text-success'> " +
+                                "<h5 class='card-title'> Compression Ratio: <b>" + data["compression_ratio"] + "%</b></h5>" +
+                                "<p class='card-text'>" + data["summary"] + "</p>" +
+                                "</div>" +
+                                "</div>";
 
-                        summ_off = "<h3>Original Text " + IconHTML_off + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
-                            data["compression_ratio"] + "%</b></span><blockquote>" + data["original_text"] + "</blockquote>";
+                            original = "<div class='card'> " +
+                                "<div class='card-header'> " +
+                                "<b>Original</b> </div> " +
+                                "<div class='card-body'> " +
+                                "<p class='card-text text-primary'>" + data["original_text"] + "</p>" +
+                                "</div>" +
+                                "</div>"
 
-                        $("#generated_summary").html(summ_on);
 
-                        let arr = JSON.parse(data["question_list"]);
-                        let questions = "";
-                        questions += "<ul>";
-                        let index;
-                        for (index = 0; index < arr.length; index++) {
-                            questions += "<li>" + arr[index] + "</li>";
+                            $("#generated_summary").html(summary);
+                            $("#generated_original").html(original);
+
+                            $("#break").attr('style', 'display: block');
+
+                            let arr = JSON.parse(data["question_list"]);
+                            let questions = "";
+                            questions += "<ul>";
+                            let index;
+                            for (index = 0; index < arr.length; index++) {
+                                questions += "<li>" + arr[index] + "</li>";
+                            }
+                            questions += "</ul>";
+                            $("#generated_questions").html("<div class='card'>" +
+                                                               "<div class='card-header'>" +
+                                                               "<b>Questions</b> </div>" +
+                                                             "<div class='card-body text-info'>" +
+                                "<blockquote>" + questions + "</blockquote>" + "</div></div></div>");
                         }
-                        questions += "</ul>";
-                        $("#generated_questions").html("<h3>Question List</h3><blockquote>" + questions + "</blockquote>")
-                    }
 
-                },
-                complete: function () {
-                    $("#loader").hide();
-                },
-                error: function (jqXHR, exception) {
-                    let msg = "";
-                    if (jqXHR.status === 0) {
-                        msg = 'Not able to connect.\n Verify Network.';
-                    } else if (jqXHR.status === 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status === 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    $("#error_message").html(msg);
-                },
+                    },
+                    complete: function () {
+                        $("#progress_bar_summary").attr('style', 'display: none');
+                        $("#upload-msg-summary").attr('style', 'display: none');
+                    },
+                    error: function (jqXHR, exception) {
+                        let msg = "";
+                        if (jqXHR.status === 0) {
+                            msg = 'Not able to connect.\n Verify Network.';
+                        } else if (jqXHR.status === 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status === 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        $("#error_message").html(msg);
+                    },
+                });
             });
         });
-    });
 
-</script>
+    </script>
 </body>
 
 </html>
