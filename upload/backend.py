@@ -101,7 +101,7 @@ def refine_text(text):
     list1 = ["very", "so", "pretty", "always", "the", "are", "is", "but",
              "and", "for", "in", "they", "a"]
     for word in list1:
-        text = text.replace(" " + word + " ", " ")
+        text = text.replace(" " + word + " ", ", ")
     return text
 
 

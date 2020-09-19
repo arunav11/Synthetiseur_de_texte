@@ -78,9 +78,9 @@ if is_lambda:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'hackathon_db',
-            'USER': 'master_hackathon',
-            'PASSWORD': 'Serverless',
-            'HOST': 'db4free.net',  # Endpoint
+            'USER': 'master',
+            'PASSWORD': 'MadhavPruthi',
+            'HOST': 'hackathon-db.c3uc12jijius.us-east-1.rds.amazonaws.com',  # Endpoint
             'PORT': '3306',
         }
     }
