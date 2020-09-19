@@ -1,50 +1,9 @@
 import os
-
+import youtube_dl
 import moviepy.editor as mp
 import requests
 import speech_recognition as sr
 from summa.summarizer import summarize
-
-
-def extract_summary_from_media_file(url: str) -> list:
-    FILE_NAME = url.split("/")[-1].split(".")[0]
-    EXTENSTION = url.split("/")[-1].split(".")[1]
-
-    print('{}.{}'.format(FILE_NAME, EXTENSTION))
-    # get the video from s3 using the url
-    r = requests.get(url, allow_redirects=True)
-
-    open('upload//{}.{}'.format(FILE_NAME, EXTENSTION), 'wb').write(r.content)
-
-    # give path for the audio file
-    filename = 'upload//{}.{}'.format(FILE_NAME, "wav")
-
-    if EXTENSTION == "mp4":
-        # convert video to audio
-        clip = mp.VideoFileClip(r"upload//{}.{}".format(FILE_NAME, EXTENSTION))
-
-        # Insert Local Audio File Path
-        clip.audio.write_audiofile(filename)
-        clip.close()
-
-    text = convert_to_text(filename)
-    text = refine_text(text)
-    punctuated_text = punctuate_text(text)
-    question_list = generate_questions(text, punctuated_text)
-
-    summary = generate_summary(punctuated_text)
-    summary = addIndentation(summary)
-    compression_ratio = (len(summary) / len(text)) * 100
-
-    try:
-        os.remove(filename)
-        os.remove('upload//{}.{}'.format(FILE_NAME, EXTENSTION))
-    except Exception as exc:
-        print("Exception occurred: ", str(exc))
-        pass
-
-    original_text = punctuated_text
-    return [original_text, summary, question_list, compression_ratio]
 
 
 def generate_questions(text, pText):
@@ -134,3 +93,83 @@ def save_questions(question_list):
                     f.write("%s\n" % i)
             else:
                 f.write("%s\n" % item)
+
+
+def get_summary_from_youtube_link(url):
+    filename = "file_name"
+    audio = "file_name.wav"
+    ydl_opts = {'outtmpl': 'file_name.mp4'}
+
+    zxt = url.strip()
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([zxt])
+
+    clip = mp.VideoFileClip(r"file_name.mp4")
+
+    # Insert Local Audio File Path
+    clip.audio.write_audiofile(audio)
+
+    clip.close()
+
+    text = convert_to_text(audio)
+    text = refine_text(text)
+    punctuated_text = punctuate_text(text)
+    question_list = generate_questions(text, punctuated_text)
+
+    summary = generate_summary(punctuated_text)
+    summary = addIndentation(summary)
+    compression_ratio = (len(summary) / len(text)) * 100
+
+    try:
+        os.remove(filename + ".wav")
+        os.remove(filename + ".mp4")
+    except Exception as exc:
+        print("Exception occurred: ", str(exc))
+        pass
+
+    original_text = punctuated_text
+    print(original_text)
+    # return [original_text, summary, question_list, compression_ratio]
+
+
+# get_summary_from_youtube_link("https://youtu.be/5N2u_Mty13A")
+
+def extract_summary_from_media_file(url: str) -> list:
+    FILE_NAME = url.split("/")[-1].split(".")[0]
+    EXTENSTION = url.split("/")[-1].split(".")[1]
+
+    print('{}.{}'.format(FILE_NAME, EXTENSTION))
+    # get the video from s3 using the url
+    r = requests.get(url, allow_redirects=True)
+
+    open('upload//{}.{}'.format(FILE_NAME, EXTENSTION), 'wb').write(r.content)
+
+    # give path for the audio file
+    filename = 'upload//{}.{}'.format(FILE_NAME, "wav")
+
+    if EXTENSTION == "mp4":
+        # convert video to audio
+        clip = mp.VideoFileClip(r"upload//{}.{}".format(FILE_NAME, EXTENSTION))
+
+        # Insert Local Audio File Path
+        clip.audio.write_audiofile(filename)
+        clip.close()
+
+    text = convert_to_text(filename)
+    text = refine_text(text)
+    punctuated_text = punctuate_text(text)
+    question_list = generate_questions(text, punctuated_text)
+
+    summary = generate_summary(punctuated_text)
+    summary = addIndentation(summary)
+    compression_ratio = (len(summary) / len(text)) * 100
+
+    try:
+        os.remove(filename)
+        os.remove('upload//{}.{}'.format(FILE_NAME, EXTENSTION))
+    except Exception as exc:
+        print("Exception occurred: ", str(exc))
+        pass
+
+    original_text = punctuated_text
+    return [original_text, summary, question_list, compression_ratio]
