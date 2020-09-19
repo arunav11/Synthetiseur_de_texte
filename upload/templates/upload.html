@@ -92,7 +92,9 @@
             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                aria-controls="nav-home" aria-selected="true">Upload Media/Lecture</a>
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-summary" role="tab"
-               aria-controls="nav-profile" aria-selected="false">Generate Summary/Questions</a>
+               aria-controls="nav-summary" aria-selected="false">Generate Summary/Questions</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-youtube" role="tab"
+               aria-controls="nav-youtube" aria-selected="false">From Youtube Link</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -135,7 +137,7 @@
         </div>
         <div class="tab-pane fade" id="nav-summary" role="tabpanel" aria-labelledby="nav-profile-tab">
             <label for="unique_id">Enter your ID associated with your video: </label>
-            <input type="text" id="unique_id" name="unique_id" required>
+            <input type="url" id="unique_id" name="unique_id" required>
             <button type="submit" id="target" class="btn btn-primary">Summarize and Generate Practice Questions</button>
             <br>
             <div id='loader' style='display: none;'>
@@ -145,27 +147,38 @@
             <div id="generated_summary">Summary will be shown here!</div>
             <div id="generated_questions"></div>
         </div>
-    </div>
-</div>
-
-
-<footer class="page-footer font-small blue pt-4">
-    <div class="container-fluid text-center text-md-left">
-        <div class="row">
-            <div class="col-md-6 mt-md-0 mt-3">
-                <h5 class="text-uppercase">Synthetiseur de Texte</h5>
-                <!--
-                TODO: To add something about our project
-                -->
-                <p>Please Add some content here chappe</p>
+        <div class="tab-pane fade" id="nav-youtube" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <label for="youtube_link">Enter valid youtube link: </label>
+            <input type="text" id="youtube_link" name="youtube_link" required>
+            <button type="submit" id="target_yt" class="btn btn-primary">Submit and process</button>
+            <br>
+            <div id='loader_yt' style='display: none;'>
+                <img src="{% static 'loading.gif' %}" width='32px' height='32px' alt="loader">
             </div>
-            <hr class="clearfix w-100 d-md-none pb-3">
+            <div class="text-danger" id="error_message_yt"></div>
+            <div id="generated_summary_yt">Summary will be shown here!</div>
+            <div id="generated_questions_yt"></div>
         </div>
     </div>
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">Team Pero_gamers :)</a>
-    </div>
-</footer>
+    <footer class="page-footer font-small blue pt-4">
+        <div class="container-fluid text-center text-md-left">
+            <div class="row">
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <h5 class="text-uppercase">Synthetiseur de Texte</h5>
+                    <!--
+                    TODO: To add something about our project
+                    -->
+                    <p>Please Add some content here chappe</p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3">
+            </div>
+        </div>
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+            <a href="#">Team Pero_gamers :)</a>
+        </div>
+    </footer>
+</div>
+
 
 <script>
     function fileSizeCheck() {
@@ -203,11 +216,7 @@
         return cookieValue;
     }
 
-    $.fn.toggleText = function (t1, t2) {
-        if (this.text() === t1) this.text(t2);
-        else this.text(t1);
-        return this;
-    };
+    let summ_on, summ_off, summ_on_yt, summ_off_yt;
 
     function toggleSummary() {
         let element = $("#generated_summary");
@@ -215,7 +224,12 @@
         $.trim(element.html()) === summ_on ? element.html(summ_off) : element.html(summ_on);
     }
 
-    let summ_on, summ_off;
+    function toggleSummary_yt() {
+        let element = $("#generated_summary_yt");
+
+        $.trim(element.html()) === summ_on_yt ? element.html(summ_off_yt) : element.html(summ_on_yt);
+    }
+
 
     $(document).ready(function () {
         $("#target").click(function (e) {
@@ -266,6 +280,7 @@
                     $("#loader").hide();
                 },
                 error: function (jqXHR, exception) {
+                    $("#loader").hide();
                     let msg = "";
                     if (jqXHR.status === 0) {
                         msg = 'Not able to connect.\n Verify Network.';
@@ -286,8 +301,78 @@
                 },
             });
         });
-    });
 
+        /* AJAX for youtube link */
+        $("#target_yt").click(function (e) {
+            const csrftoken = getCookie('csrftoken');
+            const input_data = {
+                "youtube_link": $("#youtube_link").val(),
+            };
+            $.ajax({
+                type: "POST",
+                url: "/dev/run_youtube",
+                data: input_data,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    $("#loader_yt").show();
+                    $("#error_message_yt").html("");
+                    $("#generated_summary_yt").html("");
+                    $("#generated_questions_yt").html("");
+                },
+
+                success: function (data) {
+                    if (data["has_error"] === true) {
+                        $("#error_message_yt").html(data["error"]);
+                    } else {
+                        let IconHTML_on = "<div onclick=\"toggleSummary_yt()\"><i class=\"fa fa-toggle-on\" aria-hidden=\"true\"></i></div>";
+                        let IconHTML_off = "<div onclick=\"toggleSummary_yt()\"><i class=\"fa fa-toggle-off\" aria-hidden=\"true\"></i></div>";
+
+                        summ_on_yt = "<h3>Summary " + IconHTML_on + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
+                            data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>";
+
+                        summ_off_yt = "<h3>Original Text " + IconHTML_off + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
+                            data["compression_ratio"] + "%</b></span><blockquote>" + data["original_text"] + "</blockquote>";
+
+                        $("#generated_summary_yt").html(summ_on_yt);
+
+                        let arr = JSON.parse(data["question_list"]);
+                        let questions = "";
+                        questions += "<ul>";
+                        let index;
+                        for (index = 0; index < arr.length; index++) {
+                            questions += "<li>" + arr[index] + "</li>";
+                        }
+                        questions += "</ul>";
+                        $("#generated_questions_yt").html("<h3>Question List</h3><blockquote>" + questions + "</blockquote>")
+                    }
+
+                },
+                complete: function () {
+                    $("#loader_yt").hide();
+                },
+                error: function (jqXHR, exception) {
+                    $("#loader_yt").hide();
+                    let msg = "";
+                    if (jqXHR.status === 0) {
+                        msg = 'Not able to connect.\n Verify Network.';
+                    } else if (jqXHR.status === 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status === 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    $("#error_message_yt").html(msg);
+                },
+            });
+        });
+    });
 </script>
 </body>
 

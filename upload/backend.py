@@ -1,8 +1,9 @@
 import os
-import youtube_dl
+
 import moviepy.editor as mp
 import requests
 import speech_recognition as sr
+import youtube_dl
 from summa.summarizer import summarize
 
 
@@ -79,9 +80,7 @@ def convert_to_text(filename):
 
 def save_summary(text):
     f = open("upload//Summary.txt", "w+")
-
     f.write(text)
-
     f.close()
 
 
@@ -96,15 +95,27 @@ def save_questions(question_list):
 
 
 def get_summary_from_youtube_link(url):
-    filename = "file_name"
-    audio = "file_name.wav"
-    ydl_opts = {'outtmpl': 'file_name.mp4'}
+    filename = "temp_file"
+    audio = "temp_file.wav"
+    ydl_opts = {
+        'outtmpl': 'temp_file',
+        # 'format': 'bestaudio/best',
+        # 'postprocessors': [{
+        #     'key': 'FFmpegExtractAudio',
+        #     'preferredcodec': 'wav',
+        #     'preferredquality': '192'
+        # }],
+        # 'postprocessor_args': [
+        #     '-ar', '16000'
+        # ],
+        'prefer_ffmpeg': True,
+    }
 
     zxt = url.strip()
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([zxt])
 
-    clip = mp.VideoFileClip(r"file_name.mp4")
+    clip = mp.VideoFileClip(r"temp_file.mkv")
 
     # Insert Local Audio File Path
     clip.audio.write_audiofile(audio)
@@ -121,18 +132,16 @@ def get_summary_from_youtube_link(url):
     compression_ratio = (len(summary) / len(text)) * 100
 
     try:
+        pass
         os.remove(filename + ".wav")
-        os.remove(filename + ".mp4")
+        os.remove(filename + ".mkv")
     except Exception as exc:
         print("Exception occurred: ", str(exc))
         pass
 
     original_text = punctuated_text
-    print(original_text)
-    # return [original_text, summary, question_list, compression_ratio]
+    return [original_text, summary, question_list, compression_ratio]
 
-
-# get_summary_from_youtube_link("https://youtu.be/5N2u_Mty13A")
 
 def extract_summary_from_media_file(url: str) -> list:
     FILE_NAME = url.split("/")[-1].split(".")[0]

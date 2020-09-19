@@ -3,8 +3,9 @@ import uuid
 
 from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render
+from youtube_dl import DownloadError
 
-from upload.backend import extract_summary_from_media_file
+from upload.backend import extract_summary_from_media_file, get_summary_from_youtube_link
 from upload.forms import MediaFileForm
 from upload.models import MediaFile
 
@@ -72,5 +73,37 @@ def run(request):
                 "has_error": True,
                 "error": "ID is not correct! Please try again"
             })
+
+    return HttpResponseNotFound("Page not found")
+
+
+def run_youtube(request):
+    if request.is_ajax() and request.method == 'POST':
+        data = request.POST
+        youtube_link = data["youtube_link"]
+        try:
+            original_text, summary, question_list, compression_ratio = get_summary_from_youtube_link(youtube_link)
+            final_list = json.dumps(question_list)
+        except DownloadError as exc:
+            print("Exception raised: " + str(exc))
+            return JsonResponse({
+                "has_error": True,
+                "error": "Link not valid! Try again."
+            })
+        except Exception as exc:
+            print("Exception raised: " + str(exc))
+            return JsonResponse({
+                "has_error": True,
+                "error": "Oops! Some error occurred during processing of file"
+            })
+
+        # Returning JSON Response
+        return JsonResponse({
+            "summary": summary,
+            "question_list": final_list,
+            "compression_ratio": compression_ratio,
+            "original_text": original_text,
+            "has_error": False
+        })
 
     return HttpResponseNotFound("Page not found")
