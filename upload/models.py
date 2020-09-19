@@ -8,5 +8,6 @@ class MediaFile(models.Model):
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False, )
     file = models.FileField(upload_to='files')
     summary = models.TextField(default="")
+    original_text = models.TextField(default="")
     questions = models.TextField(default="")
     compression_ratio = models.FloatField(default=80.0)

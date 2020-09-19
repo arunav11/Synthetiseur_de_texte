@@ -40,8 +40,9 @@ def run(request):
             if media_file_object.summary == "":
                 url = media_file_object.file.url
                 try:
-                    summary, question_list, compression_ratio = extract_summary_from_media_file(url)
+                    original_text, summary, question_list, compression_ratio = extract_summary_from_media_file(url)
                     media_file_object.summary = summary
+                    media_file_object.original_text = original_text
                     media_file_object.questions = json.dumps(question_list)
                     media_file_object.compression_ratio = compression_ratio
                     media_file_object.save()
@@ -56,12 +57,14 @@ def run(request):
                 summary = media_file_object.summary
                 final_list = media_file_object.questions
                 compression_ratio = media_file_object.compression_ratio
+                original_text = media_file_object.original_text
 
             # Returning JSON Response
             return JsonResponse({
                 "summary": summary,
                 "question_list": final_list,
                 "compression_ratio": compression_ratio,
+                "original_text": original_text,
                 "has_error": False
             })
         else:

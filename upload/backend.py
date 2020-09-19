@@ -28,24 +28,23 @@ def extract_summary_from_media_file(url: str) -> list:
         clip.close()
 
     text = convert_to_text(filename)
-    text1 = refine_text(text)
-    text = text1
-    punctuatedText = punctuate_text(text)
-    questionList = generate_questions(text, punctuatedText)
-    print("Questions are:", questionList)
-    print("/n")
+    text = refine_text(text)
+    punctuated_text = punctuate_text(text)
+    question_list = generate_questions(text, punctuated_text)
 
-    summary = generate_summary(punctuatedText)
+    summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
     compression_ratio = (len(summary) / len(text)) * 100
-    # save_summary(text)
+
     try:
         os.remove(filename)
         os.remove('upload//{}.{}'.format(FILE_NAME, EXTENSTION))
-    except Exception:
+    except Exception as exc:
+        print("Exception occurred: ", str(exc))
         pass
 
-    return [summary, questionList, compression_ratio]
+    original_text = punctuated_text
+    return [original_text, summary, question_list, compression_ratio]
 
 
 def generate_questions(text, pText):
