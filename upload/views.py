@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from django.http import JsonResponse, HttpResponseNotFound
@@ -38,20 +39,38 @@ def run(request):
             media_file_object: MediaFile = media_file_objects.first()
             if media_file_object.summary == "":
                 url = media_file_object.file.url
-                summary = extract_summary_from_media_file(url)
-                media_file_object.summary = summary
-                media_file_object.save()
+                try:
+                    original_text, summary, question_list, compression_ratio = extract_summary_from_media_file(url)
+                    media_file_object.summary = summary
+                    media_file_object.original_text = original_text
+                    media_file_object.questions = json.dumps(question_list)
+                    media_file_object.compression_ratio = compression_ratio
+                    media_file_object.save()
+                    final_list = json.dumps(question_list)
+                except Exception as exc:
+                    print("Exception raised: " + str(exc))
+                    return JsonResponse({
+                        "has_error": True,
+                        "error": "Oops! Some error occurred during processing of file"
+                    })
             else:
                 summary = media_file_object.summary
+                final_list = media_file_object.questions
+                compression_ratio = media_file_object.compression_ratio
+                original_text = media_file_object.original_text
 
             # Returning JSON Response
             return JsonResponse({
                 "summary": summary,
+                "question_list": final_list,
+                "compression_ratio": compression_ratio,
+                "original_text": original_text,
                 "has_error": False
             })
         else:
             return JsonResponse({
-                "has_error": True
+                "has_error": True,
+                "error": "ID is not correct! Please try again"
             })
 
     return HttpResponseNotFound("Page not found")

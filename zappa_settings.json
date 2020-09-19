@@ -8,8 +8,11 @@
     "environment_variables": {
       "FFMPEG_STATIC": "/tmp/synthetiseur_de_texte/ffmpeg",
       "IMAGEIO_FFMPEG_EXE": "/tmp/synthetiseur_de_texte/ffmpeg",
-      "is_lambda": true
+      "is_lambda": "True"
     },
-    "slim_handler": true
+    "timeout_seconds": 850,
+    "slim_handler": true,
+    "log_level": "INFO",
+    "memory_size": 2048
   }
 }

@@ -6,7 +6,7 @@ import speech_recognition as sr
 from summa.summarizer import summarize
 
 
-def extract_summary_from_media_file(url: str) -> str:
+def extract_summary_from_media_file(url: str) -> list:
     FILE_NAME = url.split("/")[-1].split(".")[0]
     EXTENSTION = url.split("/")[-1].split(".")[1]
 
@@ -16,29 +16,35 @@ def extract_summary_from_media_file(url: str) -> str:
 
     open('upload//{}.{}'.format(FILE_NAME, EXTENSTION), 'wb').write(r.content)
 
-    # convert video to audio
-    clip = mp.VideoFileClip(r"upload//{}.{}".format(FILE_NAME, EXTENSTION))
-
     # give path for the audio file
     filename = 'upload//{}.{}'.format(FILE_NAME, "wav")
 
-    # Insert Local Audio File Path
-    clip.audio.write_audiofile(filename)
+    if EXTENSTION == "mp4":
+        # convert video to audio
+        clip = mp.VideoFileClip(r"upload//{}.{}".format(FILE_NAME, EXTENSTION))
+
+        # Insert Local Audio File Path
+        clip.audio.write_audiofile(filename)
+        clip.close()
 
     text = convert_to_text(filename)
-    text1 = refine_text(text)
-    text = text1
-    punctuatedText = punctuate_text(text)
-    questionList = generate_questions(text, punctuatedText)
-    print("Questions are:", questionList)
-    print("/n")
+    text = refine_text(text)
+    punctuated_text = punctuate_text(text)
+    question_list = generate_questions(text, punctuated_text)
 
-    summary = generate_summary(punctuatedText)
+    summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
-    print("Compression Rate: {}".format(len(summary) / len(text)))
-    # save_summary(text)
+    compression_ratio = (len(summary) / len(text)) * 100
 
-    return summary
+    try:
+        os.remove(filename)
+        os.remove('upload//{}.{}'.format(FILE_NAME, EXTENSTION))
+    except Exception as exc:
+        print("Exception occurred: ", str(exc))
+        pass
+
+    original_text = punctuated_text
+    return [original_text, summary, question_list, compression_ratio]
 
 
 def generate_questions(text, pText):
@@ -54,11 +60,11 @@ def generate_questions(text, pText):
         pText = pText.replace(word, "_" * len(word))
     # pText -> punctuated text with blanks
     # keywords -> word bank
-    questions = []
+    questions: list = []
     pTextL = pText.replace("?", ".").replace("!", ".").split(". ")
     for t in pTextL:
         if t.find("__") != -1:
-            questions.append(t)
+            questions.append(str(t))
     return questions
 
 

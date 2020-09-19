@@ -66,11 +66,9 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-               aria-controls="nav-home" aria-selected="true">Overview</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-               aria-controls="nav-profile" aria-selected="false">Reports</a>
+               aria-controls="nav-home" aria-selected="true">Upload Media/Lecture</a>
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-summary" role="tab"
-               aria-controls="nav-profile" aria-selected="false">Generate Summary</a>
+               aria-controls="nav-profile" aria-selected="false">Generate Summary/Questions</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -85,7 +83,18 @@
             {% else %}
                 <h3 style="padding: 6px 0 6px 0">You don't have any lectures yet!</h3>
             {% endif %}
-            <form method="post" action="" enctype="multipart/form-data">
+
+            <div class="card text-white bg-info" style="margin: 25px">
+                <div class="card-header">Constraints regarding file upload</div>
+                <div class="card-body">
+                    <p class="card-text">File should be in <span class="text-warning"><b>MP4 or WAV</b></span> format
+                        and
+                        Size must be less than
+                        <span class="text-warning"><b>4 MB</b></span></p>
+                </div>
+            </div>
+            <form method="post" action="" enctype="multipart/form-data" name="file_upload"
+                  onsubmit="return fileSizeCheck()">
                 <div class="form-group">
                     {% csrf_token %}
                     {{ form }}
@@ -106,21 +115,50 @@
                 </div>
             {% endif %}
         </div>
-        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
         <div class="tab-pane fade" id="nav-summary" role="tabpanel" aria-labelledby="nav-profile-tab">
             <label for="unique_id">Enter your ID associated with your video: </label>
             <input type="text" id="unique_id" name="unique_id" required>
-            <button type="submit" id="target" class="btn btn-primary">Summarise</button>
+            <button type="submit" id="target" class="btn btn-primary">Summarize and Generate Practice Questions</button>
             <br>
             <div id='loader' style='display: none;'>
                 <img src="{% static 'loading.gif' %}" width='32px' height='32px' alt="loader">
             </div>
             <div class="text-danger" id="error_message"></div>
             <div id="generated_summary">Summary will be shown here!</div>
+            <div id="generated_questions"></div>
         </div>
     </div>
 </div>
+
+
+<footer class="page-footer font-small blue pt-4">
+    <div class="container-fluid text-center text-md-left">
+        <div class="row">
+            <div class="col-md-6 mt-md-0 mt-3">
+                <h5 class="text-uppercase">Synthetiseur de Texte</h5>
+                <!--
+                TODO: To add something about our project
+                -->
+                <p>Please Add some content here chappe</p>
+            </div>
+            <hr class="clearfix w-100 d-md-none pb-3">
+        </div>
+    </div>
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="#">Team Pero_gamers :)</a>
+    </div>
+</footer>
+
 <script>
+    function fileSizeCheck() {
+        let oFile = document.forms["file_upload"]["file"].files[0];
+        if (oFile.size > 4194304) {
+            alert("File size must under 4MB! (Currently: " + (oFile.size / 1024 / 1024).toFixed(2) + " MB)");
+            return false;
+        }
+        return true;
+    }
+
     function copyFunction() {
 
         let $temp = $("<input>");
@@ -138,7 +176,6 @@
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -148,6 +185,20 @@
         return cookieValue;
     }
 
+    $.fn.toggleText = function (t1, t2) {
+        if (this.text() === t1) this.text(t2);
+        else this.text(t1);
+        return this;
+    };
+
+    function toggleSummary() {
+        let element = $("#generated_summary");
+
+        $.trim(element.html()) === summ_on ? element.html(summ_off) : element.html(summ_on);
+    }
+
+    let summ_on, summ_off;
+
     $(document).ready(function () {
         $("#target").click(function (e) {
             const csrftoken = getCookie('csrftoken');
@@ -156,26 +207,65 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/run",
+                url: "/dev/run",
                 data: input_data,
                 beforeSend: function (xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     $("#loader").show();
                     $("#error_message").html("");
                     $("#generated_summary").html("");
+                    $("#generated_questions").html("");
                 },
 
                 success: function (data) {
                     if (data["has_error"] === true) {
-                        $("#error_message").html("ID is not correct! Please try again");
+                        $("#error_message").html(data["error"]);
                     } else {
-                        $("#generated_summary").html(data["summary"]);
+                        let IconHTML_on = "<div onclick=\"toggleSummary()\"><i class=\"fa fa-toggle-on\" aria-hidden=\"true\"></i></div>";
+                        let IconHTML_off = "<div onclick=\"toggleSummary()\"><i class=\"fa fa-toggle-off\" aria-hidden=\"true\"></i></div>";
+
+                        summ_on = "<h3>Summary " + IconHTML_on + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
+                            data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>";
+
+                        summ_off = "<h3>Original Text " + IconHTML_off + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
+                            data["compression_ratio"] + "%</b></span><blockquote>" + data["original_text"] + "</blockquote>";
+
+                        $("#generated_summary").html(summ_on);
+
+                        let arr = JSON.parse(data["question_list"]);
+                        let questions = "";
+                        questions += "<ul>";
+                        let index;
+                        for (index = 0; index < arr.length; index++) {
+                            questions += "<li>" + arr[index] + "</li>";
+                        }
+                        questions += "</ul>";
+                        $("#generated_questions").html("<h3>Question List</h3><blockquote>" + questions + "</blockquote>")
                     }
 
                 },
                 complete: function () {
                     $("#loader").hide();
-                }
+                },
+                error: function (jqXHR, exception) {
+                    let msg = "";
+                    if (jqXHR.status === 0) {
+                        msg = 'Not able to connect.\n Verify Network.';
+                    } else if (jqXHR.status === 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status === 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    $("#error_message").html(msg);
+                },
             });
         });
     });
