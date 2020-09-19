@@ -36,30 +36,6 @@
 
 
 </head>
-
-<style>
-    #description {
-        margin-top: 40px;
-    }
-
-    #description p {
-        margin-top: 10px;
-        font-size: 17px;
-        color: gray;
-    }
-
-    #middle-section {
-        margin-top: 40px;
-        padding: 10px;
-        background-color: aliceblue;
-    }
-
-    #nav-home {
-        text-align: center;
-    }
-
-</style>
-
 <body>
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">
@@ -115,11 +91,18 @@
                     {{ form }}
                 </div>
                 <button type="submit" class="btn btn-success">Upload File!</button>
+
+                <div class="progress" id="progress_bar">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar"
+                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                </div>
+
             </form>
             {% if unique_id %}
                 <div>Your Unique ID is <span class="font-weight-bold text-success"
                                              id="unique_id_identifier">{{ unique_id }}</span>
-                    <button class="btn" onclick="copyFunction()"><i class="fa fa-clone" title="Copy to clipboard"></i></button>
+                    <button class="btn" onclick="copyFunction()"><i class="fa fa-clone" title="Copy to clipboard"></i>
+                    </button>
                 </div>
             {% endif %}
         </div>
