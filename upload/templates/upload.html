@@ -177,7 +177,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/run",
+                url: "/dev/run",
                 data: input_data,
                 beforeSend: function (xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -191,8 +191,9 @@
                     if (data["has_error"] === true) {
                         $("#error_message").html("ID is not correct! Please try again");
                     } else {
-                        $("#generated_summary").html("<h3>Summary</h3><blockquote>" + data["summary"] + "</blockquote>");
-                        console.log(typeof(data["question_list"]));
+                        $("#generated_summary").html("<h3>Summary</h3><span class='text-success'>Compression Ratio: <b>" +
+                            data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>");
+                        console.log(typeof (data["question_list"]));
                         let arr = JSON.parse(data["question_list"]);
                         let questions = "";
                         questions += "<ul>";

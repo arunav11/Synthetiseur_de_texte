@@ -9,3 +9,4 @@ class MediaFile(models.Model):
     file = models.FileField(upload_to='files')
     summary = models.TextField(default="")
     questions = models.TextField(default="")
+    compression_ratio = models.FloatField(default=80.0)

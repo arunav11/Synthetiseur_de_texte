@@ -37,7 +37,7 @@ def extract_summary_from_media_file(url: str) -> list:
 
     summary = generate_summary(punctuatedText)
     summary = addIndentation(summary)
-    print("Compression Rate: {}".format(len(summary) / len(text)))
+    compression_ratio = (len(summary) / len(text)) * 100
     # save_summary(text)
     try:
         os.remove(filename)
@@ -45,7 +45,7 @@ def extract_summary_from_media_file(url: str) -> list:
     except Exception:
         pass
 
-    return [summary, questionList]
+    return [summary, questionList, compression_ratio]
 
 
 def generate_questions(text, pText):

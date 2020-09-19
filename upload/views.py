@@ -39,20 +39,27 @@ def run(request):
             media_file_object: MediaFile = media_file_objects.first()
             if media_file_object.summary == "":
                 url = media_file_object.file.url
-                summary, question_list = extract_summary_from_media_file(url)
-                media_file_object.summary = summary
-                media_file_object.questions = json.dumps(question_list)
-                media_file_object.save()
-                final_list = json.dumps(question_list)
+                try:
+                    summary, question_list, compression_ratio = extract_summary_from_media_file(url)
+                    media_file_object.summary = summary
+                    media_file_object.questions = json.dumps(question_list)
+                    media_file_object.compression_ratio = compression_ratio
+                    media_file_object.save()
+                    final_list = json.dumps(question_list)
+                except Exception as exc:
+                    return JsonResponse({
+                        "has_error": True
+                    })
             else:
                 summary = media_file_object.summary
                 final_list = media_file_object.questions
+                compression_ratio = media_file_object.compression_ratio
 
-            print(final_list)
             # Returning JSON Response
             return JsonResponse({
                 "summary": summary,
                 "question_list": final_list,
+                "compression_ratio": compression_ratio,
                 "has_error": False
             })
         else:

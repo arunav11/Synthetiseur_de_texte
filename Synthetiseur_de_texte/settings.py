@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'Synthetiseur_de_texte.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-is_lambda = os.environ.get("is_lambda", False)
+is_lambda = os.environ.get("is_lambda", "False") == "True"
 
 if is_lambda:
     DATABASES = {
@@ -134,24 +134,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+AWS_STORAGE_BUCKET_NAME = 'synthetiseur-de-texte-files'
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_QUERYSTRING_AUTH = False
 
 if is_lambda:
     STATIC_URL = '/static/'
-    AWS_ACCESS_KEY_ID = 'AKIAIWBBGVVF6524LA4Q'
-    AWS_SECRET_ACCESS_KEY = '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'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_STORAGE_BUCKET_NAME = 'synthetiseur-de-texte-files'
-    AWS_S3_REGION_NAME = 'us-east-1'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_QUERYSTRING_AUTH = False
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     AWS_ACCESS_KEY_ID = 'AKIAIWBBGVVF6524LA4Q'
     AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'synthetiseur-de-texte-files'
-    AWS_S3_REGION_NAME = 'us-east-1'
-    AWS_QUERYSTRING_AUTH = False
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
