@@ -47,8 +47,10 @@ def run(request):
                     media_file_object.save()
                     final_list = json.dumps(question_list)
                 except Exception as exc:
+                    print("Exception raised: " + str(exc))
                     return JsonResponse({
-                        "has_error": True
+                        "has_error": True,
+                        "error": "Oops! Some error occurred during processing of file"
                     })
             else:
                 summary = media_file_object.summary
@@ -64,7 +66,8 @@ def run(request):
             })
         else:
             return JsonResponse({
-                "has_error": True
+                "has_error": True,
+                "error": "ID is not correct! Please try again"
             })
 
     return HttpResponseNotFound("Page not found")

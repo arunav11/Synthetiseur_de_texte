@@ -189,7 +189,7 @@
 
                 success: function (data) {
                     if (data["has_error"] === true) {
-                        $("#error_message").html("ID is not correct! Please try again");
+                        $("#error_message").html(data["error"]);
                     } else {
                         $("#generated_summary").html("<h3>Summary</h3><span class='text-success'>Compression Ratio: <b>" +
                             data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>");
@@ -208,7 +208,26 @@
                 },
                 complete: function () {
                     $("#loader").hide();
-                }
+                },
+                error: function (jqXHR, exception) {
+                    let msg = "";
+                    if (jqXHR.status === 0) {
+                        msg = 'Not able to connect.\n Verify Network.';
+                    } else if (jqXHR.status === 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status === 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    $("#error_message").html(msg);
+                },
             });
         });
     });
