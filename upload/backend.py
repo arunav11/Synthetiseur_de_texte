@@ -4,28 +4,71 @@ import moviepy.editor as mp
 import requests
 import speech_recognition as sr
 from summa.summarizer import summarize
+from textblob import TextBlob
+import random
+import re
 
 
-def generate_questions(text, pText):
-    textL = text.split(" ")
-    textS = list(set(textL))
 
-    keywords = []
-    for i in range(len(textL) // 20 + 1):
-        word = max(set(textS), key=textL.count)
-        keywords.append(word)
-        textS.remove(word)
-    for word in keywords:
-        pText = pText.replace(word, "_" * len(word))
-    # pText -> punctuated text with blanks
-    # keywords -> word bank
-    questions: list = []
-    pTextL = pText.replace("?", ".").replace("!", ".").split(". ")
-    for t in pTextL:
-        if t.find("__") != -1:
-            questions.append(str(t))
+
+def generate_questions():
+
+    file1 = open("upload//Original.txt", "r+", encoding="utf-8")
+    ww2 = file1.read()
+    ww2b = TextBlob(ww2)
+    sposs = {}
+    questions=[]
+    for sentence in ww2b.sentences:
+
+        # We are going to prepare the dictionary of parts-of-speech as the key and value is a list of words:
+        # {part-of-speech: [word1, word2]}
+        # We are basically grouping the words based on the parts-of-speech
+        poss = {}
+        sposs[sentence.string] = poss;
+        for t in sentence.tags:
+            tag = t[1]
+            if tag not in poss:
+                poss[tag] = []
+            poss[tag].append(t[0])
+
+    # Create the blank in string
+    def replaceIC(word, sentence):
+        insensitive_hippo = re.compile(re.escape(word), re.IGNORECASE)
+        return insensitive_hippo.sub('__________________', sentence)
+
+    # For a sentence create a blank space.
+    # It first tries to randomly selection proper-noun
+    # and if the proper noun is not found, it selects a noun randomly.
+    def removeWord(sentence, poss):
+        words = None
+        if 'NNP' in poss:
+            words = poss['NNP']
+        elif 'NN' in poss:
+            words = poss['NN']
+        else:
+            print("NN and NNP not found")
+            return (None, sentence, None)
+        if len(words) > 0:
+            word = random.choice(words)
+            replaced = replaceIC(word, sentence)
+            return (word, sentence, replaced)
+        else:
+            print("words are empty")
+            return (None, sentence, None)
+
+    for sentence in sposs.keys():
+        poss = sposs[sentence]
+        (word, osentence, replaced) = removeWord(sentence, poss)
+        if replaced is None:
+            print("Founded none for ")
+            print(sentence)
+        else:
+            print(replaced)
+            questions.append(replaced)
+            print(" $ ")
+            print("Ans: " + word)
+            print(" $ ")
     return questions
-
 
 def punctuate_text(text):
     punctuated_text = os.popen('curl -d "text={}" http://bark.phon.ioc.ee/punctuator'.format(text))
@@ -84,6 +127,12 @@ def save_summary(text):
 
     f.close()
 
+def save_original(text):
+    f = open("upload//Original.txt", "w+")
+
+    f.write(text)
+
+    f.close()
 
 def save_questions(question_list):
     with open('questions.txt', 'w') as f:
@@ -114,7 +163,7 @@ def get_summary_from_youtube_link(url):
     text = convert_to_text(audio)
     text = refine_text(text)
     punctuated_text = punctuate_text(text)
-    question_list = generate_questions(text, punctuated_text)
+    question_list = generate_questions()
 
     summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
@@ -128,11 +177,13 @@ def get_summary_from_youtube_link(url):
         pass
 
     original_text = punctuated_text
-    print(original_text)
+    save_summary(summary)
+    save_original(original_text)
+    question_list = generate_questions()
     # return [original_text, summary, question_list, compression_ratio]
 
 
-# get_summary_from_youtube_link("https://youtu.be/5N2u_Mty13A")
+# get_summary_from_youtube_link("https://youtu.be/pWwMmHVUCZ8")
 
 def extract_summary_from_media_file(url: str) -> list:
     FILE_NAME = url.split("/")[-1].split(".")[0]
@@ -158,7 +209,7 @@ def extract_summary_from_media_file(url: str) -> list:
     text = convert_to_text(filename)
     text = refine_text(text)
     punctuated_text = punctuate_text(text)
-    question_list = generate_questions(text, punctuated_text)
+
 
     summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
@@ -172,4 +223,9 @@ def extract_summary_from_media_file(url: str) -> list:
         pass
 
     original_text = punctuated_text
+    save_summary(summary)
+    save_original(original_text)
+    question_list = generate_questions()
+
+
     return [original_text, summary, question_list, compression_ratio]
