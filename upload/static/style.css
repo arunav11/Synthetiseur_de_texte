@@ -32,8 +32,8 @@ input {
 }
 
 .progress-bar-animated {
-	-webkit-animation: progress-bar-stripes 1s linear infinite;
-	animation: progress-bar-stripes 1s linear infinite;
+    -webkit-animation: progress-bar-stripes 1s linear infinite;
+    animation: progress-bar-stripes 1s linear infinite;
 }
 
 #upload-msg {
@@ -47,19 +47,20 @@ input {
 }
 
 
-#progress_bar_summary {
+#progress_bar_summary, #progress_bar_summary_yt {
     margin: 20px 30px 0px 30px;
 }
 
-#target {
+#target, #target_yt {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#error_message {
+#error_message, #error_message_yt {
     margin-top: 10px;
 }
-#upload-msg-summary {
+
+#upload-msg-summary, #upload-msg-summary_yt {
     margin-top: 10px;
     font-size: 15px;
     text-align: center;

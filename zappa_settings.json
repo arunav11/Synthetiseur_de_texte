@@ -6,13 +6,22 @@
     "runtime": "python3.6",
     "s3_bucket": "synthetiseur-de-texte",
     "environment_variables": {
-      "FFMPEG_STATIC": "/tmp/synthetiseur_de_texte/ffmpeg",
-      "IMAGEIO_FFMPEG_EXE": "/tmp/synthetiseur_de_texte/ffmpeg",
-      "is_lambda": "True"
+      "FFMPEG_STATIC": "/mnt/serverless/ffmpeg",
+      "IMAGEIO_FFMPEG_EXE": "/mnt/serverless/ffmpeg",
+      "is_lambda": "True",
+      "NLTK_DATA": "/mnt/serverless/nltk_data"
     },
     "timeout_seconds": 850,
     "slim_handler": true,
     "log_level": "INFO",
-    "memory_size": 2048
+    "memory_size": 2880,
+    "vpc_config": {
+      "SubnetIds": [
+        "subnet-c884a2f6"
+      ],
+      "SecurityGroupIds": [
+        "sg-522c5e7b"
+      ]
+    }
   }
 }

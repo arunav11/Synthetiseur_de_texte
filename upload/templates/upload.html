@@ -90,7 +90,6 @@
         </div>
     </nav>
 
-
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             {% if all_files %}
@@ -134,7 +133,6 @@
         </div>
         <div class="tab-pane fade" id="nav-summary" role="tabpanel" aria-labelledby="nav-profile-tab">
             <label for="unique_id">Enter your ID associated with your video: </label>
-            <input type="url" id="unique_id" name="unique_id" required>
             <input class="form-control short" type="text" id="unique_id" name="unique_id" required>
             <button type="submit" id="target" class="btn btn-primary">Summarize and Generate Practice Questions</button>
             <br>
@@ -149,20 +147,49 @@
                 </p>
             </div>
 
-
             <div class="text-danger" id="error_message"></div>
             <div class="row">
                 <div class="col-md">
-                     <div id="generated_summary"></div>
+                    <div id="generated_summary"></div>
                 </div>
                 <div class="col-md">
                     <div id="generated_original"></div>
                 </div>
-
             </div>
 
             <hr id="break" style="display: none;">
             <div id="generated_questions"></div>
+        </div>
+        <div class="tab-pane fade" id="nav-youtube" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <label for="youtube_link">Enter a valid Youtube Link: </label>
+            <input class="form-control short" type="url" id="youtube_link" name="youtube_link" required>
+            <button type="submit" id="target_yt" class="btn btn-primary">Submit and process</button>
+            <br>
+
+            <div class="progress" id="progress_bar_summary_yt" style="display: none">
+                <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar"
+                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+
+            <div id="upload-msg-summary_yt" style="display: none">
+                <p>
+                    Please wait while we are processing your Link . . . .
+                </p>
+            </div>
+
+            <div class="text-danger" id="error_message_yt"></div>
+            <div class="row">
+                <div class="col-md">
+                    <div id="generated_summary_yt"></div>
+                </div>
+                <div class="col-md">
+                    <div id="generated_original_yt"></div>
+                </div>
+
+            </div>
+
+            <hr id="break_yt" style="display: none;">
+            <div id="generated_questions_yt"></div>
         </div>
     </div>
 </div>
@@ -247,26 +274,7 @@
             return cookieValue;
         }
 
-    let summ_on, summ_off, summ_on_yt, summ_off_yt;
-        $.fn.toggleText = function (t1, t2) {
-            if (this.text() === t1) this.text(t2);
-            else this.text(t1);
-            return this;
-        };
-
-        function toggleSummary() {
-            let element = $("#generated_summary");
-
-            $.trim(element.html()) === summ_on ? element.html(summ_off) : element.html(summ_on);
-        }
-
-    function toggleSummary_yt() {
-        let element = $("#generated_summary_yt");
-
-        $.trim(element.html()) === summ_on_yt ? element.html(summ_off_yt) : element.html(summ_on_yt);
-    }
-
-        let summary, original;
+        let summary, original, summ_on_yt, summ_off_yt;
 
         $(document).ready(function () {
             $("#target").click(function (e) {
@@ -284,9 +292,9 @@
                         $("#upload-msg-summary").attr('style', 'display: block');
                         $("#error_message").html("");
                         $("#generated_summary").html("");
+                        $("#generated_original").html("");
                         $("#generated_questions").html("");
                     },
-
                     success: function (data) {
                         if (data["has_error"] === true) {
                             $("#error_message").html(data["error"]);
@@ -324,71 +332,12 @@
                             }
                             questions += "</ul>";
                             $("#generated_questions").html("<div class='card'>" +
-                                                               "<div class='card-header'>" +
-                                                               "<b>Questions</b> </div>" +
-                                                             "<div class='card-body text-info'>" +
+                                "<div class='card-header'>" +
+                                "<b>Questions</b> </div>" +
+                                "<div class='card-body text-info'>" +
                                 "<blockquote>" + questions + "</blockquote>" + "</div></div></div>");
                         }
 
-                },
-                complete: function () {
-                    $("#loader").hide();
-                },
-                error: function (jqXHR, exception) {
-                    $("#loader").hide();
-                    let msg = "";
-                    if (jqXHR.status === 0) {
-                        msg = 'Not able to connect.\n Verify Network.';
-                    } else if (jqXHR.status === 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status === 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    $("#error_message").html(msg);
-                },
-            });
-        });
-
-        /* AJAX for youtube link */
-        $("#target_yt").click(function (e) {
-            const csrftoken = getCookie('csrftoken');
-            const input_data = {
-                "youtube_link": $("#youtube_link").val(),
-            };
-            $.ajax({
-                type: "POST",
-                url: "/dev/run_youtube",
-                data: input_data,
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    $("#loader_yt").show();
-                    $("#error_message_yt").html("");
-                    $("#generated_summary_yt").html("");
-                    $("#generated_questions_yt").html("");
-                },
-
-                success: function (data) {
-                    if (data["has_error"] === true) {
-                        $("#error_message_yt").html(data["error"]);
-                    } else {
-                        let IconHTML_on = "<div onclick=\"toggleSummary_yt()\"><i class=\"fa fa-toggle-on\" aria-hidden=\"true\"></i></div>";
-                        let IconHTML_off = "<div onclick=\"toggleSummary_yt()\"><i class=\"fa fa-toggle-off\" aria-hidden=\"true\"></i></div>";
-
-                        summ_on_yt = "<h3>Summary " + IconHTML_on + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
-                            data["compression_ratio"] + "%</b></span><blockquote>" + data["summary"] + "</blockquote>";
-
-                        summ_off_yt = "<h3>Original Text " + IconHTML_off + "</h3><span class=\"text-success\">Compression Ratio: <b>" +
-                            data["compression_ratio"] + "%</b></span><blockquote>" + data["original_text"] + "</blockquote>";
-
-                        $("#generated_summary_yt").html(summ_on_yt);
                     },
                     complete: function () {
                         $("#progress_bar_summary").attr('style', 'display: none');
@@ -415,47 +364,99 @@
                     },
                 });
             });
-        });
 
-                        let arr = JSON.parse(data["question_list"]);
-                        let questions = "";
-                        questions += "<ul>";
-                        let index;
-                        for (index = 0; index < arr.length; index++) {
-                            questions += "<li>" + arr[index] + "</li>";
+            /* AJAX for youtube link */
+            $("#target_yt").click(function (e) {
+                const csrftoken = getCookie('csrftoken');
+                const input_data = {
+                    "youtube_link": $("#youtube_link").val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/dev/run_youtube",
+                    data: input_data,
+
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        $("#progress_bar_summary_yt").attr('style', 'display: flex');
+                        $("#upload-msg-summary_yt").attr('style', 'display: block');
+                        $("#error_message_yt").html("");
+                        $("#generated_summary_yt").html("");
+                        $("#generated_original_yt").html("");
+                        $("#generated_questions_yt").html("");
+                    },
+                    success: function (data) {
+                        if (data["has_error"] === true) {
+                            $("#error_message_yt").html(data["error"]);
+                        } else {
+
+                            summ_on_yt = "<div class='card'> " +
+                                "<div class='card-header'> " +
+                                "<b>Summary</b> </div> " +
+                                "<div class='card-body text-success'> " +
+                                "<h5 class='card-title'> Compression Ratio: <b>" + data["compression_ratio"] + "%</b></h5>" +
+                                "<p class='card-text'>" + data["summary"] + "</p>" +
+                                "</div>" +
+                                "</div>";
+
+                            summ_off_yt = "<div class='card'> " +
+                                "<div class='card-header'> " +
+                                "<b>Original</b> </div> " +
+                                "<div class='card-body'> " +
+                                "<p class='card-text text-primary'>" + data["original_text"] + "</p>" +
+                                "</div>" +
+                                "</div>"
+
+
+                            $("#generated_summary_yt").html(summ_on_yt);
+                            $("#generated_original_yt").html(summ_off_yt);
+
+                            $("#break_yt").attr('style', 'display: block');
+
+                            let arr = JSON.parse(data["question_list"]);
+                            let questions = "";
+                            questions += "<ul>";
+                            let index;
+                            for (index = 0; index < arr.length; index++) {
+                                questions += "<li>" + arr[index] + "</li>";
+                            }
+                            questions += "</ul>";
+                            $("#generated_questions_yt").html("<div class='card'>" +
+                                "<div class='card-header'>" +
+                                "<b>Questions</b> </div>" +
+                                "<div class='card-body text-info'>" +
+                                "<blockquote>" + questions + "</blockquote>" + "</div></div></div>");
                         }
-                        questions += "</ul>";
-                        $("#generated_questions_yt").html("<h3>Question List</h3><blockquote>" + questions + "</blockquote>")
-                    }
 
-                },
-                complete: function () {
-                    $("#loader_yt").hide();
-                },
-                error: function (jqXHR, exception) {
-                    $("#loader_yt").hide();
-                    let msg = "";
-                    if (jqXHR.status === 0) {
-                        msg = 'Not able to connect.\n Verify Network.';
-                    } else if (jqXHR.status === 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status === 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    $("#error_message_yt").html(msg);
-                },
+                    },
+                    complete: function () {
+                        $("#progress_bar_summary_yt").attr('style', 'display: none');
+                        $("#upload-msg-summary_yt").attr('style', 'display: none');
+                    },
+                    error: function (jqXHR, exception) {
+                        let msg = "";
+                        if (jqXHR.status === 0) {
+                            msg = 'Not able to connect.\n Verify Network.';
+                        } else if (jqXHR.status === 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status === 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        $("#error_message_yt").html(msg);
+                    },
+
+                });
             });
+
         });
-    });
-</script>
     </script>
 </body>
 

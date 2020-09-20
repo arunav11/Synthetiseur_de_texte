@@ -1,23 +1,21 @@
 import os
-import youtube_dl
-import moviepy.editor as mp
-import requests
-import speech_recognition as sr
-from summa.summarizer import summarize
-from textblob import TextBlob
 import random
 import re
 
-
+import moviepy.editor as mp
+import requests
+import speech_recognition as sr
+import youtube_dl
+from summa.summarizer import summarize
+from textblob import TextBlob
 
 
 def generate_questions():
-
     file1 = open("upload//Original.txt", "r+", encoding="utf-8")
     ww2 = file1.read()
     ww2b = TextBlob(ww2)
     sposs = {}
-    questions=[]
+    questions = []
     for sentence in ww2b.sentences:
 
         # We are going to prepare the dictionary of parts-of-speech as the key and value is a list of words:
@@ -32,43 +30,45 @@ def generate_questions():
             poss[tag].append(t[0])
 
     # Create the blank in string
-    def replaceIC(word, sentence):
+    def replace_ic(word, sentence):
         insensitive_hippo = re.compile(re.escape(word), re.IGNORECASE)
         return insensitive_hippo.sub('__________________', sentence)
 
     # For a sentence create a blank space.
     # It first tries to randomly selection proper-noun
     # and if the proper noun is not found, it selects a noun randomly.
-    def removeWord(sentence, poss):
+    def remove_word(sentence, poss):
         words = None
         if 'NNP' in poss:
             words = poss['NNP']
         elif 'NN' in poss:
             words = poss['NN']
         else:
-            print("NN and NNP not found")
-            return (None, sentence, None)
+            # print("NN and NNP not found")
+            return None, sentence, None
         if len(words) > 0:
             word = random.choice(words)
-            replaced = replaceIC(word, sentence)
-            return (word, sentence, replaced)
+            replaced = replace_ic(word, sentence)
+            return word, sentence, replaced
         else:
             print("words are empty")
-            return (None, sentence, None)
+            return None, sentence, None
 
     for sentence in sposs.keys():
         poss = sposs[sentence]
-        (word, osentence, replaced) = removeWord(sentence, poss)
+        (word, osentence, replaced) = remove_word(sentence, poss)
         if replaced is None:
-            print("Founded none for ")
-            print(sentence)
+            # print("Founded none for ")
+            # print(sentence)
+            pass
         else:
-            print(replaced)
+            # print(replaced)
             questions.append(replaced)
-            print(" $ ")
-            print("Ans: " + word)
-            print(" $ ")
+            # print(" $ ")
+            # print("Ans: " + word)
+            # print(" $ ")
     return questions
+
 
 def punctuate_text(text):
     punctuated_text = os.popen('curl -d "text={}" http://bark.phon.ioc.ee/punctuator'.format(text))
@@ -125,12 +125,14 @@ def save_summary(text):
     f.write(text)
     f.close()
 
+
 def save_original(text):
     f = open("upload//Original.txt", "w+")
 
     f.write(text)
 
     f.close()
+
 
 def save_questions(question_list):
     with open('questions.txt', 'w') as f:
@@ -143,11 +145,12 @@ def save_questions(question_list):
 
 
 def get_summary_from_youtube_link(url):
-    filename = "temp_file"
-    audio = "temp_file.wav"
+    print("Current Working Directory: ", os.getcwd())
+    filename = os.getcwd() + "/temp_file"
+    audio = os.getcwd() + "/temp_file.wav"
     ydl_opts = {
-        'outtmpl': 'temp_file',
-        # 'format': 'bestaudio/best',
+        'outtmpl': filename,
+        'format': 'worstvideo[filesize<50M] + bestaudio/best[filesize<50M]',
         # 'postprocessors': [{
         #     'key': 'FFmpegExtractAudio',
         #     'preferredcodec': 'wav',
@@ -163,7 +166,7 @@ def get_summary_from_youtube_link(url):
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([zxt])
 
-    clip = mp.VideoFileClip(r"temp_file.mkv")
+    clip = mp.VideoFileClip(filename + ".mkv")
 
     # Insert Local Audio File Path
     clip.audio.write_audiofile(audio)
@@ -173,7 +176,6 @@ def get_summary_from_youtube_link(url):
     text = convert_to_text(audio)
     text = refine_text(text)
     punctuated_text = punctuate_text(text)
-    question_list = generate_questions()
 
     summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
@@ -181,7 +183,7 @@ def get_summary_from_youtube_link(url):
 
     try:
         pass
-        os.remove(filename + ".wav")
+        os.remove(audio)
         os.remove(filename + ".mkv")
     except Exception as exc:
         print("Exception occurred: ", str(exc))
@@ -191,7 +193,7 @@ def get_summary_from_youtube_link(url):
     save_summary(summary)
     save_original(original_text)
     question_list = generate_questions()
-    # return [original_text, summary, question_list, compression_ratio]
+    return [original_text, summary, question_list, compression_ratio]
 
 
 # get_summary_from_youtube_link("https://youtu.be/pWwMmHVUCZ8")
@@ -221,7 +223,6 @@ def extract_summary_from_media_file(url: str) -> list:
     text = refine_text(text)
     punctuated_text = punctuate_text(text)
 
-
     summary = generate_summary(punctuated_text)
     summary = addIndentation(summary)
     compression_ratio = (len(summary) / len(text)) * 100
@@ -237,6 +238,5 @@ def extract_summary_from_media_file(url: str) -> list:
     save_summary(summary)
     save_original(original_text)
     question_list = generate_questions()
-
 
     return [original_text, summary, question_list, compression_ratio]

@@ -121,3 +121,5 @@ GitHub.sublime-settings
 
 /.idea/vcs.xml
 /.idea
+/upload/migrations/
+/nltk_data/
