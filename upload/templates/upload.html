@@ -225,10 +225,13 @@
     <script>
 
         $(document).on('submit', '#file_upload', function (e) {
-            var progress_bar = document.getElementById('progress_bar');
-            var upload_msg = document.getElementById('upload-msg');
-            progress_bar.setAttribute('style', 'display: flex');
-            upload_msg.setAttribute('style', 'display: block');
+            let oFile = document.forms["file_upload"]["file"].files[0];
+            if (oFile.size <= 4194304) {
+                var progress_bar = document.getElementById('progress_bar');
+                var upload_msg = document.getElementById('upload-msg');
+                progress_bar.setAttribute('style', 'display: flex');
+                upload_msg.setAttribute('style', 'display: block');
+            }
         });
 
         function fileSizeCheck() {
