@@ -1,9 +1,11 @@
 <div align="center">
 <h1>Synthetiseur_de_texte</h1>
 <blockquote>
-<p><i>Synthétiseur de texte is a transcript-generating summarizer that aims to help students to create a comprehensive and concise summary of recorded lectures and save their time.User can either upload a lecture video or audio file OR can enter a youtube video link to get the summary and probable questions.</b></p>
-	</blockquote>
+<p><i>Synthétiseur de texte is a transcript-generating summarizer that aims to help students to create a comprehensive and concise summary of recorded lectures and save their time.User can either upload a lecture video or audio file OR can enter a youtube video link to get the summary and probable questions.</b></i></p>
+</blockquote>
 </div>
+
+
 # Key features and technologies
 ## Django and python 
 Django and python have been used to write the web app.
