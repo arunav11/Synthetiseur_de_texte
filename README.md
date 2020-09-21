@@ -66,6 +66,17 @@ python manage.py runserver
 
 The project should be up and running on (http://127.0.0.1:8000)
 
+# Deployment
+```
+# Update corresponding zappa settings in zappa_settings.json and run the following command
+zappa update dev 
+
+# For watching logs
+zappa tail
+
+# NOTE: Make sure your aws credentials are set in ~/.aws/credentials
+```
+
 ## Testing 
 Sample <a href="https://synthetiseur-de-texte-files.s3.amazonaws.com/files/sample.mp4"> file </a> has been provided for testing.
  
