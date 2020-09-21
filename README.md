@@ -16,22 +16,24 @@
 * If the recorded lecture is not available **youtube link** to the video can be provided.
 
 # Screenshots
-![ss1](/website-1.JPG)
+
 
 <div align="center"><i><b>Upload file</b></i></div>
+![ss1](/website-1.JPG)
 
 
 
 
-![ss2](/webiste-2.JPG)
 <div align="center"><b><i>Copy UUID </i></b></div>
+![ss2](/webiste-2.JPG)
 
 
 
-
-![ss3](/website3.JPG)
 
 <div align="center"><b><i>Summary and questions generated</b></i></div>
+![ss3](/website3.JPG)
+
+
 
 
 # Technologies used
