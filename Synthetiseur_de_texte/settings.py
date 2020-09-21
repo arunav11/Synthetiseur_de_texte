@@ -146,7 +146,7 @@ else:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    AWS_ACCESS_KEY_ID = 'AKIAIWBBGVVF6524LA4Q'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
