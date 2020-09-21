@@ -46,6 +46,8 @@ Live Working Demo: <a href="https://0dwf3qmn8j.execute-api.us-east-1.amazonaws.c
 Django and python have been used to write the web app.
 ## NLTK Library
 NLTK libraries have been used to **generate questions and summary**.
+## AWS Services
+Lambda, EFS, RDS and API Gateway has been used.
 
 # Running the project on local machine:
 First clone the project to your local machine:
