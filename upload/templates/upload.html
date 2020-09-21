@@ -43,7 +43,7 @@
         Synthetiseur de Texte
     </a>
     <a href="https://github.com/arunav11/Synthetiseur_de_texte/" target="_blank">
-        <img height="30px" src="{% static 'icons8-github-144.png' %}"> </a>
+        <img height="30px" src="{% static 'icons8-github-144.png' %}" alt="github_logo"> </a>
 </nav>
 
 {% if unique_id %}
@@ -62,7 +62,7 @@
 <div class="container" id="description">
     <div class="row">
         <div class="col-6 mx-auto col-md-4 order-md-2">
-            <img height="200px" src="{% static 'homepage.png' %}">
+            <img height="200px" src="{% static 'homepage.png' %}" alt="logo">
         </div>
         <div class="col-md-8 order-md-1 text-center text-md-left pr-md-5">
             <h1 class="mb-3">Get Your Lecture Summary Easily</h1>
@@ -70,6 +70,7 @@
                 Synthetiseur de Texte provides you an easy way to convert your lecture video/audio to a summary so it is
                 easier for you to refer to it later.
             </p>
+            <p><strong>BUILD WITH SERVERLESS | SKILLENZA</strong></p>
 
         </div>
     </div>
@@ -204,9 +205,9 @@
             <div class="col-4">
                 <h5>Team</h5>
                 <ul class="list-unstyled text-small">
-                    <li><span>Arunav Sharma</span></li>
-                    <li><span>Deepak Tiwari</span></li>
-                    <li><span>Madhav Pruthi</span></li>
+                    <li><span><a href="https://github.com/arunav11">Arunav Sharma</a></span></li>
+                    <li><span><a href="https://github.com/deepaktiwari88">Deepak Tiwari</a></span></li>
+                    <li><span><a href="https://github.com/MadhavPruthi">Madhav Pruthi</a></span></li>
                 </ul>
             </div>
             <div class="col-4">
@@ -214,18 +215,9 @@
                 <ul class="list-unstyled text-small">
                     <li><span>Django</span></li>
                     <li><span>Bootstrap</span></li>
-                    <li><span>AWS</span></li>
+                    <li><span>AWS Services</span></li>
                 </ul>
             </div>
-            {#          <div class="col-6 col-md">#}
-            {#            <h5>About</h5>#}
-            {#            <ul class="list-unstyled text-small">#}
-            {#              <li><a class="text-muted" href="#">Team</a></li>#}
-            {#              <li><a class="text-muted" href="#">Locations</a></li>#}
-            {#              <li><a class="text-muted" href="#">Privacy</a></li>#}
-            {#              <li><a class="text-muted" href="#">Terms</a></li>#}
-            {#            </ul>#}
-            {#          </div>#}
         </div>
     </footer>
 
@@ -354,7 +346,7 @@
                         } else if (exception === 'parsererror') {
                             msg = 'Requested JSON parse failed.';
                         } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
+                            msg = 'Connection Timed out! Please try with same ID after two minutes.';
                         } else if (exception === 'abort') {
                             msg = 'Ajax request aborted.';
                         } else {
@@ -444,7 +436,7 @@
                         } else if (exception === 'parsererror') {
                             msg = 'Requested JSON parse failed.';
                         } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
+                            msg = 'Request timed out! Please try with smaller duration video.';
                         } else if (exception === 'abort') {
                             msg = 'Ajax request aborted.';
                         } else {

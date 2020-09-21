@@ -22,7 +22,7 @@ def generate_questions():
         # {part-of-speech: [word1, word2]}
         # We are basically grouping the words based on the parts-of-speech
         poss = {}
-        sposs[sentence.string] = poss;
+        sposs[sentence.string] = poss
         for t in sentence.tags:
             tag = t[1]
             if tag not in poss:
@@ -44,7 +44,7 @@ def generate_questions():
         elif 'NN' in poss:
             words = poss['NN']
         else:
-            # print("NN and NNP not found")
+
             return None, sentence, None
         if len(words) > 0:
             word = random.choice(words)
@@ -58,15 +58,12 @@ def generate_questions():
         poss = sposs[sentence]
         (word, osentence, replaced) = remove_word(sentence, poss)
         if replaced is None:
-            # print("Founded none for ")
-            # print(sentence)
+
             pass
         else:
-            # print(replaced)
+
             questions.append(replaced)
-            # print(" $ ")
-            # print("Ans: " + word)
-            # print(" $ ")
+
     return questions
 
 
@@ -146,32 +143,37 @@ def save_questions(question_list):
 
 def get_summary_from_youtube_link(url):
     print("Current Working Directory: ", os.getcwd())
+    # os.environ["PATH"] = os.getcwd()
     filename = os.getcwd() + "/temp_file"
     audio = os.getcwd() + "/temp_file.wav"
     ydl_opts = {
         'outtmpl': filename,
-        'format': 'worstvideo[filesize<50M] + bestaudio/best[filesize<50M]',
-        # 'postprocessors': [{
-        #     'key': 'FFmpegExtractAudio',
-        #     'preferredcodec': 'wav',
-        #     'preferredquality': '192'
-        # }],
-        # 'postprocessor_args': [
-        #     '-ar', '16000'
-        # ],
+        # 'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'wav',
+            'preferredquality': '192'
+        }],
+        'postprocessor_args': [
+            '-ar', '16000'
+        ],
         'prefer_ffmpeg': True,
+        "ffmpeg-location": r'/mnt/serverless'
     }
+
+    # if is_lambda:
+    #     ydl_opts.update({"ffmpeg-location": "/mnt/serverless"})
 
     zxt = url.strip()
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([zxt])
-
-    clip = mp.VideoFileClip(filename + ".mkv")
-
-    # Insert Local Audio File Path
-    clip.audio.write_audiofile(audio)
-
-    clip.close()
+    #
+    # clip = mp.VideoFileClip(filename)
+    #
+    # # Insert Local Audio File Path
+    # clip.audio.write_audiofile(audio)
+    #
+    # clip.close()
 
     text = convert_to_text(audio)
     text = refine_text(text)
@@ -184,7 +186,7 @@ def get_summary_from_youtube_link(url):
     try:
         pass
         os.remove(audio)
-        os.remove(filename + ".mkv")
+        # os.remove(filename)
     except Exception as exc:
         print("Exception occurred: ", str(exc))
         pass

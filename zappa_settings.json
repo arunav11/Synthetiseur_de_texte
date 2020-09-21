@@ -15,6 +15,9 @@
     "slim_handler": true,
     "log_level": "INFO",
     "memory_size": 2880,
+    "exclude": [
+      "db.sqlite3"
+    ],
     "vpc_config": {
       "SubnetIds": [
         "subnet-c884a2f6"
