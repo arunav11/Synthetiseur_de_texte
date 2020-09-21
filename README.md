@@ -15,6 +15,19 @@
 
 * If the recorded lecture is not available **youtube link** to the video can be provided.
 
+# Screenshots
+![ss1](/website-1.JPG)
+
+<div align="center"><i><b>Upload file</b></i></div>
+
+![ss2](/webiste-2.JPG)
+<div align="center"><b><i>Copy UUID </i></b></div>
+
+![ss3](/website3.JPG)
+
+<div align="center"><b><i>Summary and questions generated</b></i></div>
+
+
 # Technologies used
 ## Django and Python 
 Django and python have been used to write the web app.
@@ -50,3 +63,5 @@ Sample **file** have been provided for testing.
  Sample **youtube link** have been provided for testing.
  
  https://www.youtube.com/watch?v=beAvFHP4wDI&ab_channel=OneMinuteEconomics
+
+
