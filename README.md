@@ -6,7 +6,7 @@
 </div>
 
 # Motivation
-<i> During the global paendamic students attended online classes instead of physical classes.But due to network issues all were not able to follow what was being taught in the class. So to overcome we came with Synthetiseur_de_texte.Technology can never take place of the teacher but stil we tried to bridge the gap as much as possible.</i>
+<i> During the global paendamic students attended online classes instead of physical classes.But due to network issues all were not able to follow what was being taught in the class. So to overcome we came up with Synthetiseur_de_texte.Technology can never take place of the teacher but stil we tried to bridge the gap as much as possible.</i>
 
 # Key features 
 **Recorded lectures** can be provided which are then converted into summary for quick **revision**.
