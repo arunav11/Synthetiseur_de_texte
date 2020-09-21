@@ -10,6 +10,7 @@
 
 # Key features 
 **Recorded lectures** can be provided which are then converted into summary for quick **revision.**
+
 If the recorded lecture is not available **youtube link** to the video can be provided.
 
 # Technologies used
