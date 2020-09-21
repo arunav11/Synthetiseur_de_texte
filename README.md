@@ -47,7 +47,11 @@ Django and python have been used to write the web app.
 ## NLTK Library
 NLTK libraries have been used to **generate questions and summary**.
 ## AWS Services
-Lambda, EFS, RDS and API Gateway has been used.
+- AWS Lambda - Used for deploying Web app (serverless architecture)
+- AWS API Gateway - USed to route HTTP requests
+- AWS RDS - Used to host MYSQL DB
+- AWS Elastic File System - To hold the large sized binaries
+- AWS VPC - For consolidating the various services and handling their interactions
 
 # Running the project on local machine:
 First clone the project to your local machine:
