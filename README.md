@@ -4,7 +4,7 @@
 <p><i>Synthétiseur de texte is a transcript-generating summarizer that aims to help students to create a comprehensive and concise summary of recorded lectures and save their time.</b></i></p>
 </blockquote>
 </div>
-Live Working Demo: <a href="0dwf3qmn8j.execute-api.us-east-1.amazonaws.com/dev"> Website </a>
+Live Working Demo: <a href="https://0dwf3qmn8j.execute-api.us-east-1.amazonaws.com/dev"> Website </a>
 
 
 # Motivation
