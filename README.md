@@ -60,7 +60,7 @@ git clone https://github.com/arunav11/Synthetiseur_de_texte.git
 ```
 Install the dependencies:
 ```
-pi3 install -r requirements.txt 
+pip install -r requirements.txt 
 ```
 Apply migrations to the database:
 ```
