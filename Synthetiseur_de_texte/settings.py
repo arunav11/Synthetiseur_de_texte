@@ -77,11 +77,11 @@ if is_lambda:
         # }
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'hackathon_db',
-            'USER': 'master',
-            'PASSWORD': 'MadhavPruthi',
-            'HOST': 'hackathon-db.c3uc12jijius.us-east-1.rds.amazonaws.com',  # Endpoint
-            'PORT': '3306',
+            'NAME': os.getenv("NAME"),
+            'USER': os.getenv("USER"),
+            'PASSWORD': os.getenv("PASSWORD"),
+            'HOST': os.getenv("HOST"),
+            'PORT': os.getenv("PORT"),
         }
     }
 else:
@@ -90,14 +90,6 @@ else:
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.mysql',
-        #     'NAME': 'hackathon_db',
-        #     'USER': 'master_hackathon',
-        #     'PASSWORD': 'Serverless',
-        #     'HOST': 'db4free.net',  # Endpoint
-        #     'PORT': '3306',
-        # }
     }
 
 # Password validation
